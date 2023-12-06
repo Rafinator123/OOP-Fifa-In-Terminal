@@ -2,6 +2,7 @@
 from pyfiglet import Figlet
 import random
 import names
+import time
 
 #this is for introduction. I.e. each time you run game it will say you had an illustrious carrier at one of these 3
 random_soccer_teams = [
@@ -60,19 +61,22 @@ https://github.com/Rafinator123/OOP-Fifa-In-Terminal
     print("Character Creation:")
     f_name = input("What is your first name? ")
     l_name = input("What is your last name? ")
-    coach = input("Input a name for your coach: ")
+    print("Coach's Name:",f_name,l_name)
 
     print(f'''\nAfter an ilustrious career working at {random_soccer_teams[random.randint(0,9)]}, you've been approached 
-from the following clubs to manage them to the world cup.\n''')
+from the following clubs to manage them at the world cup.\n''')
+          
+    time.sleep(3)
 
     ratings=["Easy","Medium","Hard","Very Hard"]
     #Print four teams here going from easy difficulty to hard:
     for i in range(1,5,1):
-        print("\n"+str(i)+".\nTEAM NAME\n"+"--------------\nChallenge Level:",ratings[i-1],"\nOFFENSE: [stars here]\nDEFENSE: [stars here]")      
+        print("\n"+str(i)+".\nTEAM NAME\n"+"--------------\nChallenge Level:",ratings[i-1],"\nOFFENSE: [stars here]\nDEFENSE: [stars here]")
+        time.sleep(2)      
     
     print()
     checkValidInputInt(4,1,"Choose a team: ")
-    print("Current Lineup:\n--------------\nCoach:",f_name,l_name+"\n--------------")
+    print("\nCurrent Lineup:\n--------------\nCoach:",f_name,l_name+"\n--------------")
     positions = ["GK","LB","CB","CB","RB","CM","CM","CAM","LW","ST","RW"]
     for i in positions:
         print(i+":",names.get_full_name(gender="male"))
