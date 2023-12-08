@@ -1,21 +1,27 @@
 """Calls main function"""
 from pyfiglet import Figlet
 import random
-import names
 import time
+from world_cup import WorldCup, Group
+from helper_functions import calculateGameCPU_group_stages
+
 
 #this is for introduction. I.e. each time you run game it will say you had an illustrious carrier at one of these 3
 random_soccer_teams = [
-    "FC Barcelona",
-    "Manchester United FC",
+    "AC Milan",
     "Juventus FC",
+    "Internazionale",
+    
+    "FC Barcelona",
+    "Real Madrid",
+    "Atletico de Madrid",
+
+    "Manchester United",
+    "Manchester City",
+    "Liverpool",
+    
     "Bayern Munich",
-    "Paris Saint-Germain FC",
-    "Boca Juniors",
-    "Ajax Amsterdam",
-    "Flamengo",
     "Borussia Dortmund",
-    "Celtic FC"
 ]
 
 
@@ -63,28 +69,43 @@ https://github.com/Rafinator123/OOP-Fifa-In-Terminal
     l_name = input("What is your last name? ")
     print("Coach's Name:",f_name,l_name)
 
-    print(f'''\nAfter an ilustrious career working at {random_soccer_teams[random.randint(0,9)]}, you've been approached 
+    print(f'''\nAfter an ilustrious career working at {random_soccer_teams[random.randint(0,len(random_soccer_teams)-1)]}, you've been approached 
 from the following clubs to manage them at the world cup.\n''')
           
     time.sleep(3)
 
     ratings=["Easy","Medium","Hard","Very Hard"]
     #Print four teams here going from easy difficulty to hard:
-    for i in range(1,5,1):
-        print("\n"+str(i)+".\nTEAM NAME\n"+"--------------\nChallenge Level:",ratings[i-1],"\nOFFENSE: [stars here]\nDEFENSE: [stars here]")
+    wc = WorldCup()
+    randomized_team_selection =[]
+    randomized_team_selection.append(wc.pot1[random.randint(0, len(wc.pot1)-1)])
+    randomized_team_selection.append(wc.pot2[random.randint(0, len(wc.pot2)-1)])
+    randomized_team_selection.append(wc.pot3[random.randint(0, len(wc.pot3)-1)])
+    randomized_team_selection.append(wc.pot4[random.randint(0, len(wc.pot4)-1)])
+    
+    for i in range(0,4):
+        print(f"\n {i + 1}. \n {randomized_team_selection[i].nation}\n--------------\n\
+        Challenge Level: {ratings[i]} \nOFFENSE: {randomized_team_selection[i].offense}\nDEFENSE: {randomized_team_selection[i].defense}")
         time.sleep(2)      
     
     print()
-    checkValidInputInt(4,1,"Choose a team: ")
-    print("\nCurrent Lineup:\n--------------\nCoach:",f_name,l_name+"\n--------------")
-    positions = ["GK","LB","CB","CB","RB","CM","CM","CAM","LW","ST","RW"]
-    for i in positions:
-        print(i+":",names.get_full_name(gender="male"))
-
-
-
-
-
-
+    
+    #validate input 
+    while True:
+        print("Choose your team: ")
+        choice = input()
+        if (isNum(choice) and int(choice) > 0 and int(choice) < 5):
+            player_nation = randomized_team_selection[int(choice)-1]
+            break
+    
+    #Simulate world cup
+    #! Group stages
+    wc.groupStages()
+    #! Round of 16
+    
+    #!Quarter finals
+    
+    #!Semi-finals
+    
+    #!Finals
 main()
-
