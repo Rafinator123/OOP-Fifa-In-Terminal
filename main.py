@@ -38,7 +38,7 @@ def checkValidInputInt(upperLim,lowerLim,inputQuestion):
     loop=True
     while(loop):
         out=input(inputQuestion)
-        if isNum(out) and int(out)<=upperLim and int(out)>=lowerLim:
+        if len(out)>0 and isNum(out) and int(out)<=upperLim and int(out)>=lowerLim:
             loop=False
             return out
         else:
@@ -89,24 +89,24 @@ from the following clubs to manage them at the world cup.\n''')
     print()
     
     #validate input 
-    while True:
-        print("Choose your team: ")
-        choice = input()
-        if (isNum(choice) and int(choice) > 0 and int(choice) < 5):
-            player_nation = randomized_team_selection[int(choice)-1]
-            break
+    choice = checkValidInputInt(4,1,"Choose your team: ")
+    player_nation = randomized_team_selection[int(choice)-1]
     
     print(f"\nYou have chosen {player_nation.nation} as your team. Good luck!")
 
+    choice = checkValidInputInt(2,1,"Would you like to view the results of the other teams? Press 1 for 'YES' or 2 for 'NO': ")
+    wc.groupStages()
+    if(int(choice)==1):
+        wc.printGS()
 
     # Demo of trivia questions
-    trivia.ask_trivia_question()
-    trivia.ask_trivia_question()
-    trivia.ask_trivia_question()
+    # trivia.ask_trivia_question()
+    # trivia.ask_trivia_question()
+    # trivia.ask_trivia_question()
 
     #Simulate world cup
     #! Group stages
-    wc.groupStages()
+
     #! Round of 16
     #!Quarter finals
     #!Semi-finals
