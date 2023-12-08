@@ -1,7 +1,6 @@
 """App file containing class definitions"""
 from helper_functions import calculateGameCPU_group_stages
 
-
 class Nation:
     def __init__(self, c: str, n: str, o: str, mid : str, d: str, off, deff: str) -> None:
         self.coach = c
@@ -44,7 +43,7 @@ class Group:
         #third round
         getPoints("a","c")
         getPoints("b", "d")
-        self.printOutTable()
+    
     def printOutTable(self):
         print(f"Group {self.letter}\n ------------------ \n ")
         
@@ -159,7 +158,11 @@ class WorldCup:
     def groupStages(self):
         for i in range(0, len(self.groups)):
             self.groups[i].simulateGroupStage()
+
+    def printGS(self):
+        for i in range(0, len(self.groups)):
             self.groups[i].printOutTable()
+
     def simulate(self):
         self.groupStages()
         self.quarterFinals()

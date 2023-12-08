@@ -3,7 +3,7 @@ from pyfiglet import Figlet
 import random
 import time
 from world_cup import WorldCup, Group
-from helper_functions import calculateGameCPU_group_stages
+from helper_functions import *
 
 
 #this is for introduction. I.e. each time you run game it will say you had an illustrious carrier at one of these 3
@@ -23,25 +23,6 @@ random_soccer_teams = [
     "Bayern Munich",
     "Borussia Dortmund",
 ]
-
-
-def isNum(inp):
-    for i in inp:
-        if not i.isdigit():
-            return False
-    return True
-
-
-def checkValidInputInt(upperLim,lowerLim,inputQuestion):
-    #upper lim and lower lim are INCLUSIVE
-    loop=True
-    while(loop):
-        out=input(inputQuestion)
-        if isNum(out) and int(out)<=upperLim and int(out)>=lowerLim:
-            loop=False
-            return out
-        else:
-            print("Invalid Input, try again")
 
 
 def main():
@@ -85,22 +66,19 @@ from the following clubs to manage them at the world cup.\n''')
     
     for i in range(0,4):
         print(f"\n {i + 1}. \n {randomized_team_selection[i].nation}\n--------------\n\
-        Challenge Level: {ratings[i]} \nOFFENSE: {randomized_team_selection[i].offense}\nDEFENSE: {randomized_team_selection[i].defense}")
-        time.sleep(2)      
-    
+        Challenge Level: {ratings[i]} \nOFFENSE: {stars(randomized_team_selection[i].offense)}\nDEFENSE: {stars(randomized_team_selection[i].defense)}")
+        time.sleep(2)
+             
     print()
-    
-    #validate input 
-    while True:
-        print("Choose your team: ")
-        choice = input()
-        if (isNum(choice) and int(choice) > 0 and int(choice) < 5):
-            player_nation = randomized_team_selection[int(choice)-1]
-            break
-    
+    choice = checkValidInputInt(4,1,"Choose your team: ")
+    player_nation = randomized_team_selection[int(choice)-1]
+            
+    seeOthers = checkValidInputInt(2,1,"\nWould you like to see the results of the other nations? Type 1 for 'YES' and 2 for 'NO': ")
     #Simulate world cup
     #! Group stages
     wc.groupStages()
+    if(int(seeOthers)==1):
+        wc.printGS()
     #! Round of 16
     
     #!Quarter finals
@@ -108,4 +86,6 @@ from the following clubs to manage them at the world cup.\n''')
     #!Semi-finals
     
     #!Finals
-main()
+#main()
+
+printGoal()

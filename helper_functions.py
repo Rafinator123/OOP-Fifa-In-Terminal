@@ -1,5 +1,9 @@
 """Includes helper functions"""
 import random
+from pyfiglet import Figlet
+
+used_colors = list()
+
 def scoreCalc(offense, defense):
     return max(0, offense - defense)
 
@@ -56,3 +60,28 @@ def calculateGameUser(opposition):
 def generateQuestion():
     """Returns question:answer paring."""
     return
+
+def stars(num_starz):
+    return '* '*num_starz
+
+def isNum(inp):
+    for i in inp:
+        if not i.isdigit():
+            return False
+    return True
+
+
+def checkValidInputInt(upperLim,lowerLim,inputQuestion):
+    #upper lim and lower lim are INCLUSIVE
+    loop=True
+    while(loop):
+        out=input(inputQuestion)
+        if len(out)>0 and isNum(out) and int(out)<=upperLim and int(out)>=lowerLim:
+            loop=False
+            return out
+        else:
+            print("Invalid Input, try again")
+
+def printGoal():
+    f = Figlet(font='slant')
+    print(f.renderText('GOAL!!!'))
