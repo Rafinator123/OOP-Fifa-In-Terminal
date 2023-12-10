@@ -70,8 +70,8 @@ https://github.com/Rafinator123/OOP-Fifa-In-Terminal
 
     print(f'''\nAfter an ilustrious career working at {random_soccer_teams[random.randint(0,len(random_soccer_teams)-1)]}, you've been approached 
 from the following clubs to manage them at the world cup.\n''')
-          
-    time.sleep(2)
+       
+    # time.sleep(3)
 
     ratings=["Easy","Medium","Hard","Very Hard"]
     # Print four teams here going from easy difficulty to hard:
@@ -81,14 +81,25 @@ from the following clubs to manage them at the world cup.\n''')
     randomized_team_selection.append(wc.pot2[random.randint(0, len(wc.pot2)-1)])
     randomized_team_selection.append(wc.pot3[random.randint(0, len(wc.pot3)-1)])
     randomized_team_selection.append(wc.pot4[random.randint(0, len(wc.pot4)-1)])
+    randomized_team_selection.append("test")
     
+    #todo: print out the stars
     for i in range(0,4):
+        print(f"\n {i + 1}. \n {randomized_team_selection[i].nation}\n--------------\n\
+        Challenge Level: {ratings[i]} \nOFFENSE: {randomized_team_selection[i].offense}\nDEFENSE: {randomized_team_selection[i].defense}")
+        # time.sleep(2)
         print(f"({i + 1}): {randomized_team_selection[i].nation:<20} Challenge Level: {ratings[i]:<10} OFFENSE: {randomized_team_selection[i].offense:<10} DEFENSE: {randomized_team_selection[i].defense}")
         time.sleep(1)      
     
     print()
     
     #validate input 
+    nation =randomized_team_selection[ int(checkValidInputInt(5,1,"Choose your team: "))-1]
+
+    # time.sleep(2)
+    #todo:  Print out your team stats
+    wc.currUser = nation
+    wc.simulate()
     choice = checkValidInputInt(4,1,"Choose your team: ")
     player_nation = randomized_team_selection[int(choice)-1]
     
