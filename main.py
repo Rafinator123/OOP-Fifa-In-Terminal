@@ -3,7 +3,8 @@ from pyfiglet import Figlet
 import random
 import time
 from world_cup import WorldCup, Group
-from helper_functions import *
+import trivia
+from helper_functions import calculateGameCPU_group_stages
 
 
 #this is for introduction. I.e. each time you run game it will say you had an illustrious carrier at one of these 3
@@ -25,6 +26,25 @@ random_soccer_teams = [
 ]
 
 
+def isNum(inp):
+    for i in inp:
+        if not i.isdigit():
+            return False
+    return True
+
+
+def checkValidInputInt(upperLim,lowerLim,inputQuestion):
+    #upper lim and lower lim are INCLUSIVE
+    loop=True
+    while(loop):
+        out=input(inputQuestion)
+        if len(out)>0 and isNum(out) and int(out)<=upperLim and int(out)>=lowerLim:
+            loop=False
+            return out
+        else:
+            print("Invalid Input, try again")
+
+
 def main():
     print("----------------------------------------------------------------------------------")
     f = Figlet(font='slant')
@@ -44,19 +64,17 @@ Github:
 https://github.com/Rafinator123/OOP-Fifa-In-Terminal
 ''')
     print("----------------------------------------------------------------------------------")
-    input() #waits for user to click 
-    print("Character Creation:")
     f_name = input("What is your first name? ")
     l_name = input("What is your last name? ")
     print("Coach's Name:",f_name,l_name)
 
     print(f'''\nAfter an ilustrious career working at {random_soccer_teams[random.randint(0,len(random_soccer_teams)-1)]}, you've been approached 
 from the following clubs to manage them at the world cup.\n''')
-          
+       
     # time.sleep(3)
 
     ratings=["Easy","Medium","Hard","Very Hard"]
-    #Print four teams here going from easy difficulty to hard:
+    # Print four teams here going from easy difficulty to hard:
     wc = WorldCup()
     randomized_team_selection =[]
     randomized_team_selection.append(wc.pot1[random.randint(0, len(wc.pot1)-1)])
@@ -70,6 +88,8 @@ from the following clubs to manage them at the world cup.\n''')
         print(f"\n {i + 1}. \n {randomized_team_selection[i].nation}\n--------------\n\
         Challenge Level: {ratings[i]} \nOFFENSE: {randomized_team_selection[i].offense}\nDEFENSE: {randomized_team_selection[i].defense}")
         # time.sleep(2)
+        print(f"({i + 1}): {randomized_team_selection[i].nation:<20} Challenge Level: {ratings[i]:<10} OFFENSE: {randomized_team_selection[i].offense:<10} DEFENSE: {randomized_team_selection[i].defense}")
+        time.sleep(1)      
     
     print()
     
@@ -80,4 +100,26 @@ from the following clubs to manage them at the world cup.\n''')
     #todo:  Print out your team stats
     wc.currUser = nation
     wc.simulate()
+    choice = checkValidInputInt(4,1,"Choose your team: ")
+    player_nation = randomized_team_selection[int(choice)-1]
+    
+    print(f"\nYou have chosen {player_nation.nation} as your team. Good luck!")
+
+    choice = checkValidInputInt(2,1,"Would you like to view the results of the other teams? Press 1 for 'YES' or 2 for 'NO': ")
+    wc.groupStages()
+    if(int(choice)==1):
+        wc.printGS()
+
+    # Demo of trivia questions
+    # trivia.ask_trivia_question()
+    # trivia.ask_trivia_question()
+    # trivia.ask_trivia_question()
+
+    #Simulate world cup
+    #! Group stages
+
+    #! Round of 16
+    #!Quarter finals
+    #!Semi-finals
+    #!Finals
 main()
