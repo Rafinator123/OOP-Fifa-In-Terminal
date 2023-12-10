@@ -1,5 +1,6 @@
 """App file containing class definitions"""
-from helper_functions import calculateGameCPU_group_stages
+from helper_functions import calculateGameCPU_group_stages, calculateGameUser_groupStage
+
 
 class Nation:
     def __init__(self, c: str, n: str, o: str, mid : str, d: str, off, deff: str) -> None:
@@ -22,7 +23,63 @@ class Group:
         self.group["c"] = [n3,0]
         self.group["d"] = [n4,0]
         return
-    def simulateGroupStage(self):
+    def simulateGroupStagePlayer(self, currUser):
+        def getPoints(t1, t2):
+            if (self.group[t1][0].nation == currUser.nation):
+                winner = calculateGameUser_groupStage(self.group[t1][0], self.group[t2][0])
+                if len(winner) > 1:
+                    self.group[t1][1] += 1
+                    self.group[t2][1] += 1
+                else:
+                    if winner == t1:
+                        self.group[t1][1] += 3
+                    else:
+                        self.group[t2][1] += 3
+            elif (self.group[t2][0].nation == currUser.nation):
+                winner = calculateGameUser_groupStage(self.group[t2][0], self.group[t1][0])
+                if len(winner) > 1:
+                    self.group[t1][1] += 1
+                    self.group[t2][1] += 1
+                else:
+                    if winner == t1:
+                        self.group[t1][1] += 3
+                    else:
+                        self.group[t2][1] += 3
+            else:    
+                winner = calculateGameCPU_group_stages(self.group[t1][0], self.group[t2][0])
+                if len(winner) > 1:
+                    self.group[t1][1] += 1
+                    self.group[t2][1] += 1
+                else:
+                    if winner == t1:
+                        self.group[t1][1] += 3
+                    else:
+                        self.group[t2][1] += 3
+        """Simulaes games for the whole group."""
+        #First round
+        getPoints("a","b")
+        getPoints("c","d")
+        #Second round
+        getPoints("a","d")
+        getPoints("b","c")
+        #third round
+        getPoints("a","c")
+        getPoints("b", "d")
+        self.printOutTable()
+        # getPoints(self.group["a"],self.group["b"])
+        # getPoints(self.group["c"],self.group["d"])
+        # self.printOutTable()
+        # #Second round
+        # getPoints(self.group["a"],self.group["d"])
+        # getPoints(self.group["b"],self.group["c"])
+        # self.printOutTable()
+        # #third round
+        # getPoints(self.group["a"],self.group["c"])
+        # getPoints(self.group["b"],self.group["d"])
+        # self.printOutTable()
+        #Exit prematurely if you fail to go through
+        
+    def simulateGroupStageCPU(self):
         def getPoints(t1, t2):
             winner = calculateGameCPU_group_stages(self.group[t1][0], self.group[t2][0])
             if len(winner) > 1:
@@ -34,7 +91,7 @@ class Group:
                 else:
                     self.group[t2][1] += 3
         """Simulaes games for the whole group."""
-        #First round
+        # First round
         getPoints("a","b")
         getPoints("c","d")
         #Second round
@@ -43,18 +100,18 @@ class Group:
         #third round
         getPoints("a","c")
         getPoints("b", "d")
-    
+        self.printOutTable()
     def printOutTable(self):
         print(f"Group {self.letter}\n ------------------ \n ")
         
         # Sort nations in the group based on points
         sorted_nations = sorted(self.group.values(), key=lambda x: x[1], reverse=True)
-
         for i, (nation, points) in enumerate(sorted_nations, start=1):
             print(f"{i}. {nation.nation} - Points: {points}")
         
 class WorldCup:
     def __init__(self):
+        self.currUser = ""
         self.groups = []
         self.pot1 =[]
         self.pot2 =[]
@@ -156,17 +213,36 @@ class WorldCup:
         self.groups.append(groupH)
         
     def groupStages(self):
-        for i in range(0, len(self.groups)):
-            self.groups[i].simulateGroupStage()
-
-    def printGS(self):
-        for i in range(0, len(self.groups)):
-            self.groups[i].printOutTable()
-
+        winners = {}
+        for i in range(len(self.groups)):
+            #winner needs to be collected and we need to check this.
+            check = False
+            for key in self.groups[i].group:
+                if self.groups[i].group[key][0].nation == self.currUser.nation:
+                    check = True
+            if check:
+                self.groups[i].simulateGroupStagePlayer(self.currUser)
+            else:
+                self.groups[i].simulateGroupStageCPU()
+            #collect the top winners
+            #count sort
+            count_sort = []
+            for key in self.groups[i].group:
+                currNation = self.groups[i].group[key]
+            sorted_nations = sorted(self.groups[i].group.values(), key=lambda x: x[1], reverse=True)
+            for j in range(1,3):
+                code = self.groups[i].letter + str(j)
+                print(code)
+                winners[code] = sorted_nations[j-1]
+            # self.groups[i].printOutTable()
+        return winners
+            
     def simulate(self):
-        self.groupStages()
-        self.quarterFinals()
-        self.semiFinals()
-        self.finals()
+        winners = {}
+        winners = self.groupStages()
+        print(winners)
+        # winners = self.quarterFinals(winners)
+        # winners = self.semiFinals(winners)
+        # winner = self.finals(winners)
         return
         

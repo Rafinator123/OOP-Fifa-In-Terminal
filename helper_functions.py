@@ -8,20 +8,21 @@ def scoreCalc(offense, defense):
     return max(0, offense - defense)
 
 def calculateGameCPU_group_stages(t1, t2):
+    """"""
     t1_score = scoreCalc(random.randint(t1.offense-2,t1.offense+2), random.randint(t2.defense-2, t2.offense+2))
     t2_score = scoreCalc(random.randint(t2.offense-2,t2.offense+2), random.randint(t1.defense-2, t1.offense+2))
-    if t1_score == t2_score: 
+    if t1_score == t2_score:
         return [t1,t2]
-    elif t1_score > t2_score: 
+    elif t1_score > t2_score:
         return [t1]
     else:
         return [t2]
-    
 def calculateGameCPU_knockouts(t1, t2):
     """Calculates games between teams"""
     
     t1_score = scoreCalc(random.randint(t1.offense-2,t1.offense+2), random.randint(t2.defense-2, t2.offense+2))
     t2_score = scoreCalc(random.randint(t2.offense-2,t2.offense+2), random.randint(t1.defense-2, t1.offense+2))
+    
     #Extra time
     if t1_score == t2_score:
         t1_score = scoreCalc(random.randint(t1.offense-2,t1.offense), random.randint(t2.defense-2, t2.offense))
@@ -53,9 +54,53 @@ def calculateGameCPU_knockouts(t1, t2):
     else:
         return t2
 
-def calculateGameUser(opposition): 
-    """Calculates game between user and opposition"""
-    return
+def calculateGameUser_groupStage(t1, t2): 
+    t1_score = scoreCalc(random.randint(t1.offense - 2, t1.offense + 2), random.randint(t2.defense - 2, t2.defense + 2))
+    t2_score = scoreCalc(random.randint(t2.offense - 2, t2.offense + 2), random.randint(t1.defense - 2 , t1.defense + 2))
+    #Go through rounds
+    counter = 0
+    t1_actual_score = 0
+    t2_actual_score = 0
+    while counter < t1_score + t2_score:
+        #If counter is right
+        if counter % 2 == 0:
+            #attacking
+            print(f"{t1.midfielder} finds {t1.key_outfielder} on the attack!\n He's through on goal!")
+            correct = True
+            answer = input("Answer this question to score:")
+            if correct:
+                t1_actual_score += 1
+                print(f"Scored by {t1.key_outfielder}")
+                print(f"It's {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
+            else:
+                print(f"What a defensive play by {t2.key_defender}...")
+                print(f"Score remains {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
+                t1_score -= 1
+        else:
+            #defending
+            print(f"{t2.midfielder} finds {t2.key_outfielder} on the attack!\n It's all up to {t1.key_defender} to stop it!")
+            answer = input ("Answer this question to score")
+            #question generation
+            correct = True
+            if correct:
+                print(f"Scored by {t1.key_outfielder}")
+                print(f"It's {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
+            else:
+                t2_actual_score += 1
+                print(f"What a defensive play by {t2.key_defender}...")
+                print(f"Score remains {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
+                t2_score -= 1
+        print("--------------------------------")
+        counter += 1
+    print("The referee has blown the wistle...")
+    print(f"Final score: {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
+
+    if t1_actual_score < t2_actual_score:
+        return [t2]
+    elif t1_actual_score > t2_actual_score:
+        return [t1]
+    else:
+        return [t1, t2]
 
 def generateQuestion():
     """Returns question:answer paring."""

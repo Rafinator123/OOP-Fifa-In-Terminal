@@ -53,7 +53,7 @@ https://github.com/Rafinator123/OOP-Fifa-In-Terminal
     print(f'''\nAfter an ilustrious career working at {random_soccer_teams[random.randint(0,len(random_soccer_teams)-1)]}, you've been approached 
 from the following clubs to manage them at the world cup.\n''')
           
-    time.sleep(3)
+    # time.sleep(3)
 
     ratings=["Easy","Medium","Hard","Very Hard"]
     #Print four teams here going from easy difficulty to hard:
@@ -63,29 +63,21 @@ from the following clubs to manage them at the world cup.\n''')
     randomized_team_selection.append(wc.pot2[random.randint(0, len(wc.pot2)-1)])
     randomized_team_selection.append(wc.pot3[random.randint(0, len(wc.pot3)-1)])
     randomized_team_selection.append(wc.pot4[random.randint(0, len(wc.pot4)-1)])
+    randomized_team_selection.append("test")
     
+    #todo: print out the stars
     for i in range(0,4):
         print(f"\n {i + 1}. \n {randomized_team_selection[i].nation}\n--------------\n\
-        Challenge Level: {ratings[i]} \nOFFENSE: {stars(randomized_team_selection[i].offense)}\nDEFENSE: {stars(randomized_team_selection[i].defense)}")
-        time.sleep(2)
-             
+        Challenge Level: {ratings[i]} \nOFFENSE: {randomized_team_selection[i].offense}\nDEFENSE: {randomized_team_selection[i].defense}")
+        # time.sleep(2)
+    
     print()
-    choice = checkValidInputInt(4,1,"Choose your team: ")
-    player_nation = randomized_team_selection[int(choice)-1]
-            
-    seeOthers = checkValidInputInt(2,1,"\nWould you like to see the results of the other nations? Type 1 for 'YES' and 2 for 'NO': ")
-    #Simulate world cup
-    #! Group stages
-    wc.groupStages()
-    if(int(seeOthers)==1):
-        wc.printGS()
-    #! Round of 16
     
-    #!Quarter finals
-    
-    #!Semi-finals
-    
-    #!Finals
-#main()
+    #validate input 
+    nation =randomized_team_selection[ int(checkValidInputInt(5,1,"Choose your team: "))-1]
 
-printGoal()
+    # time.sleep(2)
+    #todo:  Print out your team stats
+    wc.currUser = nation
+    wc.simulate()
+main()
