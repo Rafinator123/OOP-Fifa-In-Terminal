@@ -1,6 +1,7 @@
 """Includes helper functions"""
 import random
 from pyfiglet import Figlet
+from trivia import ask_trivia_question
 
 used_colors = list()
 
@@ -65,11 +66,14 @@ def calculateGameUser_groupStage(t1, t2):
         #If counter is right
         if counter % 2 == 0:
             #attacking
-            print(f"{t1.midfielder} finds {t1.key_outfielder} on the attack!\n He's through on goal!")
-            correct = True
-            answer = input("Answer this question to score:")
+            print(f"{t1.midfielder} finds {t1.key_outfielder} on the attack! He's through on goal!")
+            printTeam(t1,t2)
+           
+            correct = ask_trivia_question()
             if correct:
+                printGoal()
                 t1_actual_score += 1
+                print("Correct!")
                 print(f"Scored by {t1.key_outfielder}")
                 print(f"It's {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
             else:
@@ -79,7 +83,7 @@ def calculateGameUser_groupStage(t1, t2):
         else:
             #defending
             print(f"{t2.midfielder} finds {t2.key_outfielder} on the attack!\n It's all up to {t1.key_defender} to stop it!")
-            answer = input ("Answer this question to score")
+            ask_trivia_question()
             #question generation
             correct = True
             if correct:
@@ -130,3 +134,7 @@ def checkValidInputInt(upperLim,lowerLim,inputQuestion):
 def printGoal():
     f = Figlet(font='slant')
     print(f.renderText('GOAL!!!'))
+
+def printTeam(team1,team2):
+    f = Figlet(font='slant')
+    print(f.renderText(team1.nation +" vs "+ team2.nation))

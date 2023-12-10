@@ -85,9 +85,6 @@ from the following clubs to manage them at the world cup.\n''')
     
     #todo: print out the stars
     for i in range(0,4):
-        print(f"\n {i + 1}. \n {randomized_team_selection[i].nation}\n--------------\n\
-        Challenge Level: {ratings[i]} \nOFFENSE: {randomized_team_selection[i].offense}\nDEFENSE: {randomized_team_selection[i].defense}")
-        # time.sleep(2)
         print(f"({i + 1}): {randomized_team_selection[i].nation:<20} Challenge Level: {ratings[i]:<10} OFFENSE: {randomized_team_selection[i].offense:<10} DEFENSE: {randomized_team_selection[i].defense}")
         time.sleep(1)      
     

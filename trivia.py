@@ -1,4 +1,5 @@
 import random
+import helper_functions
 
 trivia = [
     ("Which country won the first FIFA World Cup in 1930?", ["Brazil", "Uruguay", "Italy", "Germany"], 1),
@@ -29,15 +30,11 @@ def ask_trivia_question():
     for i, option in enumerate(options):
         print(f"({i + 1}): {option}")
 
-    while True:
-        try:
-            user_choice = int(input("Select your answer: ")) - 1
-            break
-        # User entered a non-integer
-        except ValueError:
-            print("Invalid input. Please enter a number.")
+    user_choice = helper_functions.checkValidInputInt(4,1,"Choose your answer: ")
 
-    if user_choice == correct_index:
-        print("Correct!")
+    if int(user_choice) == correct_index:
+        print("FUUUUCKKKK YOU GOT IT RIGHT")
+        return True
     else:
-        print("Incorrect. The correct answer is:", options[correct_index])
+        #print("Incorrect. The correct answer is:", options[correct_index])
+        return False
