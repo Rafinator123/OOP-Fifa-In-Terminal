@@ -106,10 +106,6 @@ def calculateGameUser_groupStage(t1, t2):
     else:
         return [t1, t2]
 
-def generateQuestion():
-    """Returns question:answer paring."""
-    return
-
 def stars(num_starz):
     return '* '*num_starz
 

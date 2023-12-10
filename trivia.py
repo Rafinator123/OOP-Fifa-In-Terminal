@@ -32,9 +32,9 @@ def ask_trivia_question():
 
     user_choice = helper_functions.checkValidInputInt(4,1,"Choose your answer: ")
 
-    if int(user_choice) == correct_index:
-        print("FUUUUCKKKK YOU GOT IT RIGHT")
+    if int(user_choice)-1 == correct_index:
+        print("FUUUUCKKKK YOU GOT IT RIGHT YEAAAAAAH BABY LETS G OO OO  O")
         return True
     else:
-        #print("Incorrect. The correct answer is:", options[correct_index])
+        print("Incorrect. The correct answer is:", options[correct_index])
         return False
