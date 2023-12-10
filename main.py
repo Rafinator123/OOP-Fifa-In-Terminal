@@ -87,9 +87,7 @@ from the following clubs to manage them at the world cup.\n''')
     for i in range(0,4):
         print(f"({i + 1}): {randomized_team_selection[i].nation:<20} Challenge Level: {ratings[i]:<10} OFFENSE: {randomized_team_selection[i].offense:<10} DEFENSE: {randomized_team_selection[i].defense}")
         time.sleep(1)      
-    
-    print()
-    
+        
     #validate input 
     nation =randomized_team_selection[ int(checkValidInputInt(5,1,"Choose your team: "))-1]
 
@@ -103,7 +101,6 @@ from the following clubs to manage them at the world cup.\n''')
     print(f"\nYou have chosen {player_nation.nation} as your team. Good luck!")
 
     choice = checkValidInputInt(2,1,"Would you like to view the results of the other teams? Press 1 for 'YES' or 2 for 'NO': ")
-    wc.groupStages()
     if(int(choice)==1):
         wc.printGS()
 

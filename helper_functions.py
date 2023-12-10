@@ -1,9 +1,50 @@
 """Includes helper functions"""
 import random
+import time
 from pyfiglet import Figlet
 from trivia import ask_trivia_question
 
 used_colors = list()
+def userGameSimulation(t1, t2, t1_score, t2_score):
+    counter = 0
+    t1_actual_score = 0
+    t2_actual_score = 0
+    while counter < t1_score + t2_score:
+        #If counter is right
+        if counter % 2 == 0:
+            #attacking
+            print(f"{t1.midfielder} finds {t1.key_outfielder} on the attack! He's through on goal!")
+            printTeam(t1,t2)
+           
+            correct = ask_trivia_question()
+            if correct:
+                printGoal()
+                t1_actual_score += 1
+                print("Correct!")
+                print(f"Scored by {t1.key_outfielder}")
+                print(f"It's {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
+            else:
+                print(f"What a defensive play by {t2.key_defender}...")
+                print(f"Score remains {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
+                t1_score -= 1
+        else:
+            #defending
+            print(f"{t2.midfielder} finds {t2.key_outfielder} on the attack!\n It's all up to {t1.key_defender} to stop it!")
+            
+            #question generation
+            correct = ask_trivia_question()
+            if correct:
+                print(f"Scored by {t1.key_outfielder}")
+                print(f"It's {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
+            else:
+                t2_actual_score += 1
+                print(f"What a defensive play by {t2.key_defender}...")
+                print(f"Score remains {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
+                t2_score -= 1
+        print("--------------------------------")
+        counter += 1
+    return t1_score, t2_score
+
 
 def scoreCalc(offense, defense):
     return max(0, offense - defense)
@@ -56,46 +97,12 @@ def calculateGameCPU_knockouts(t1, t2):
         return t2
 
 def calculateGameUser_groupStage(t1, t2): 
+    print(f"{t1.nation} vs {t2.nation}")
     t1_score = scoreCalc(random.randint(t1.offense - 2, t1.offense + 2), random.randint(t2.defense - 2, t2.defense + 2))
     t2_score = scoreCalc(random.randint(t2.offense - 2, t2.offense + 2), random.randint(t1.defense - 2 , t1.defense + 2))
     #Go through rounds
-    counter = 0
-    t1_actual_score = 0
-    t2_actual_score = 0
-    while counter < t1_score + t2_score:
-        #If counter is right
-        if counter % 2 == 0:
-            #attacking
-            print(f"{t1.midfielder} finds {t1.key_outfielder} on the attack! He's through on goal!")
-            printTeam(t1,t2)
-           
-            correct = ask_trivia_question()
-            if correct:
-                printGoal()
-                t1_actual_score += 1
-                print("Correct!")
-                print(f"Scored by {t1.key_outfielder}")
-                print(f"It's {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
-            else:
-                print(f"What a defensive play by {t2.key_defender}...")
-                print(f"Score remains {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
-                t1_score -= 1
-        else:
-            #defending
-            print(f"{t2.midfielder} finds {t2.key_outfielder} on the attack!\n It's all up to {t1.key_defender} to stop it!")
-            ask_trivia_question()
-            #question generation
-            correct = True
-            if correct:
-                print(f"Scored by {t1.key_outfielder}")
-                print(f"It's {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
-            else:
-                t2_actual_score += 1
-                print(f"What a defensive play by {t2.key_defender}...")
-                print(f"Score remains {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
-                t2_score -= 1
-        print("--------------------------------")
-        counter += 1
+    t1_actual_score, t2_actual_score = userGameSimulation(t1, t2, t1_score, t2_score)
+    
     print("The referee has blown the wistle...")
     print(f"Final score: {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
 
@@ -105,7 +112,53 @@ def calculateGameUser_groupStage(t1, t2):
         return [t1]
     else:
         return [t1, t2]
+def calculateGameUser_knockout(t1, t2): 
+    print(f"{t1.nation} vs {t2.nation}")
+    t1_score = scoreCalc(random.randint(t1.offense - 2, t1.offense + 2), random.randint(t2.defense - 2, t2.defense + 2))
+    t2_score = scoreCalc(random.randint(t2.offense - 2, t2.offense + 2), random.randint(t1.defense - 2 , t1.defense + 2))
+    #Go through rounds
+    t1_actual_score, t2_actual_score = userGameSimulation(t1, t2, t1_score, t2_score)
 
+    print("The score is tied... going to extra time!")
+    #Extra time
+    if t1_actual_score == t2_actual_score:
+        t1_score = scoreCalc(random.randint(t1.offense-2,t1.offense), random.randint(t2.defense-2, t2.offense))
+        t2_score = scoreCalc(random.randint(t2.offense-2,t2.offense), random.randint(t1.defense-2, t1.offense))
+        extra_time_t1_actual_score, extra_time_t2_actual_score = userGameSimulation(t1, t2, t1_score, t2_score)
+
+        if extra_time_t1_actual_score > extra_time_t2_actual_score:
+            return t1
+        elif extra_time_t1_actual_score < extra_time_t2_actual_score:
+            return t2
+    #no extra time
+    else:
+        if t1_actual_score > t2_actual_score:
+            return t1
+        else:
+            return t2
+    # Penalties
+    t1_penalties = 0
+    t2_penalties = 0
+
+    while t1_penalties < 5 and t2_penalties < 5:
+        t1_penalty_score = random.randint(0, 1)
+        t2_penalty_score = random.randint(0, 1)
+        
+        if t1_penalty_score > t2_penalty_score:
+            printGoal()
+            t1_penalties += 1
+            print(f"{t1.nation} has scored!")
+        else:
+            printGoal()
+            print(f"{t2.nation} has scored!")
+            t2_penalties += 1
+        print(f"{t1.nation} {t1_penalties} - {t2_penalties} {t2.nation}")
+        time.sleep(1)
+
+    if t1_penalties > t2_penalties:
+        return t1
+    else:
+        return t2  
 def stars(num_starz):
     return '* '*num_starz
 

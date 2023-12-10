@@ -1,5 +1,5 @@
 """App file containing class definitions"""
-from helper_functions import calculateGameCPU_group_stages, calculateGameUser_groupStage
+from helper_functions import calculateGameCPU_group_stages, calculateGameCPU_knockouts, calculateGameUser_groupStage, calculateGameUser_knockout
 
 
 class Nation:
@@ -233,16 +233,96 @@ class WorldCup:
             for j in range(1,3):
                 code = self.groups[i].letter + str(j)
                 print(code)
-                winners[code] = sorted_nations[j-1]
+                winners[code] = sorted_nations[j-1][0]
             # self.groups[i].printOutTable()
         return winners
-            
+    def round16(self, group_stage_winners):
+        r16_winners = {}
+        def knockout(t1, t2):
+            if t1.nation == self.currUser:
+                winner = calculateGameUser_knockout(t1,t2)
+            if t2.nation == self.currUser:
+                winner = calculateGameUser_knockout(t2,t1)
+            else:
+                winner = calculateGameCPU_knockouts(t1,t2)
+            return winner
+        # Group A  vs Group B
+        A1B2 = knockout(group_stage_winners["A1"],group_stage_winners["B2"])
+        A2B1 = knockout(group_stage_winners["A2"],group_stage_winners["B1"])
+        r16_winners["A1B2"] = A1B2
+        r16_winners["A2B1"] = A2B1
+        # Group C vs Group D
+        C1D2 = knockout(group_stage_winners["C1"],group_stage_winners["D2"])
+        C2D1 = knockout(group_stage_winners["C2"],group_stage_winners["D1"])
+        r16_winners["C1D2"] = C1D2
+        r16_winners["C2D1"] = C2D1
+        # Group E vs Group F 
+        E1F2 = knockout(group_stage_winners["E1"],group_stage_winners["F2"])
+        E2F1 = knockout(group_stage_winners["E2"],group_stage_winners["F1"])
+        r16_winners["E1F2"] = E1F2
+        r16_winners["E2F1"] = E2F1
+        # Group G vs Group H
+        G1H2 = knockout(group_stage_winners["G1"],group_stage_winners["H2"])
+        G2H1 = knockout(group_stage_winners["G2"],group_stage_winners["H1"])
+        r16_winners["G1H2"] = G1H2
+        r16_winners["G2H1"] = G2H1
+        return r16_winners
+    def quarterFinals(self, r16_winners):
+        def knockout(t1, t2):
+            if t1.nation == self.currUser:
+                winner = calculateGameUser_knockout(t1,t2)
+            if t2.nation == self.currUser:
+                winner = calculateGameUser_knockout(t2,t1)
+            else:
+                winner = calculateGameCPU_knockouts(t1,t2)
+            return winner
+        quarter_finals_winners = {}
+        #first match
+        left_bracket_1 = knockout(r16_winners["A1B2"], r16_winners["C1D2"])
+        quarter_finals_winners["l1"] = left_bracket_1
+        left_bracket_2 = knockout(r16_winners["E1F2"], r16_winners["G1H2"])
+        quarter_finals_winners["l2"] = left_bracket_2
+        right_bracket_1 = knockout(r16_winners["A2B1"],r16_winners["C2D1"])
+        quarter_finals_winners["r1"] = right_bracket_1
+        right_bracket_2 = knockout(r16_winners["G2H1"],r16_winners["E2F1"])
+        quarter_finals_winners["r2"] = right_bracket_2
+        return quarter_finals_winners
+    def semiFinals(self, quarter_finals_winners):
+        def knockout(t1, t2):
+            if t1.nation == self.currUser:
+                winner = calculateGameUser_knockout(t1,t2)
+            if t2.nation == self.currUser:
+                winner = calculateGameUser_knockout(t2,t1)
+            else:
+                winner = calculateGameCPU_knockouts(t1,t2)
+            return winner
+        finals = {}
+        #first match
+        final_left = knockout(quarter_finals_winners["l1"], quarter_finals_winners["l2"])
+        final_right = knockout(quarter_finals_winners["r1"], quarter_finals_winners["r2"])
+        finals["l"] = final_left
+        finals["r"] = final_right
+        return finals
+    def finals(self, finals):
+        def knockout(t1, t2):
+            if t1.nation == self.currUser:
+                winner = calculateGameUser_knockout(t1,t2)
+            if t2.nation == self.currUser:
+                winner = calculateGameUser_knockout(t2,t1)
+            else:
+                winner = calculateGameCPU_knockouts(t1,t2)
+            return winner
+        #first match
+        world_cup_champion  = knockout(finals["l"], finals["r"])
+        return world_cup_champion
+    
     def simulate(self):
         winners = {}
         winners = self.groupStages()
-        print(winners)
-        # winners = self.quarterFinals(winners)
-        # winners = self.semiFinals(winners)
-        # winner = self.finals(winners)
+        winners = self.round16(winners)
+        winners = self.quarterFinals(winners)
+        winners = self.semiFinals(winners)
+        winner = self.finals(winners)
+        print(f"{winner.nation} has won the world cup")
         return
         
