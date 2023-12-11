@@ -1,5 +1,5 @@
 """App file containing class definitions"""
-from helper_functions import calculateGameCPU_group_stages, calculateGameCPU_knockouts, calculateGameUser_groupStage, calculateGameUser_knockout
+from helper_functions import calculateGameCPU_group_stages, calculateGameCPU_knockouts, calculateGameUser_groupStage, calculateGameUser_knockout, printTeam
 
 
 class Nation:
@@ -31,7 +31,7 @@ class Group:
                     self.group[t1][1] += 1
                     self.group[t2][1] += 1
                 else:
-                    if winner == t1:
+                    if winner[0] == self.group[t1][0]:
                         self.group[t1][1] += 3
                     else:
                         self.group[t2][1] += 3
@@ -41,7 +41,7 @@ class Group:
                     self.group[t1][1] += 1
                     self.group[t2][1] += 1
                 else:
-                    if winner == t1:
+                    if winner[0] == self.group[t1][0]:
                         self.group[t1][1] += 3
                     else:
                         self.group[t2][1] += 3
@@ -51,7 +51,7 @@ class Group:
                     self.group[t1][1] += 1
                     self.group[t2][1] += 1
                 else:
-                    if winner == t1:
+                    if winner == self.group[t1][0]:
                         self.group[t1][1] += 3
                     else:
                         self.group[t2][1] += 3
@@ -100,9 +100,8 @@ class Group:
         #third round
         getPoints("a","c")
         getPoints("b", "d")
-        self.printOutTable()
     def printOutTable(self):
-        print(f"Group {self.letter}\n ------------------ \n ")
+        print(f"Group {self.letter}\n ------------------")
         
         # Sort nations in the group based on points
         sorted_nations = sorted(self.group.values(), key=lambda x: x[1], reverse=True)
@@ -232,16 +231,15 @@ class WorldCup:
             sorted_nations = sorted(self.groups[i].group.values(), key=lambda x: x[1], reverse=True)
             for j in range(1,3):
                 code = self.groups[i].letter + str(j)
-                print(code)
                 winners[code] = sorted_nations[j-1][0]
-            # self.groups[i].printOutTable()
+        input("Press enter to continue:")
         return winners
     def round16(self, group_stage_winners):
         r16_winners = {}
         def knockout(t1, t2):
-            if t1.nation == self.currUser:
+            if t1.nation == self.currUser.nation:
                 winner = calculateGameUser_knockout(t1,t2)
-            if t2.nation == self.currUser:
+            if t2.nation == self.currUser.nation:
                 winner = calculateGameUser_knockout(t2,t1)
             else:
                 winner = calculateGameCPU_knockouts(t1,t2)
@@ -289,9 +287,9 @@ class WorldCup:
         return quarter_finals_winners
     def semiFinals(self, quarter_finals_winners):
         def knockout(t1, t2):
-            if t1.nation == self.currUser:
+            if t1.nation == self.currUser.nation:
                 winner = calculateGameUser_knockout(t1,t2)
-            if t2.nation == self.currUser:
+            if t2.nation == self.currUser.nation:
                 winner = calculateGameUser_knockout(t2,t1)
             else:
                 winner = calculateGameCPU_knockouts(t1,t2)
@@ -305,9 +303,9 @@ class WorldCup:
         return finals
     def finals(self, finals):
         def knockout(t1, t2):
-            if t1.nation == self.currUser:
+            if t1.nation == self.currUser.nation:
                 winner = calculateGameUser_knockout(t1,t2)
-            if t2.nation == self.currUser:
+            if t2.nation == self.currUser.nation:
                 winner = calculateGameUser_knockout(t2,t1)
             else:
                 winner = calculateGameCPU_knockouts(t1,t2)
@@ -316,13 +314,21 @@ class WorldCup:
         world_cup_champion  = knockout(finals["l"], finals["r"])
         return world_cup_champion
     
-    def simulate(self):
+    def simulate(self, verbose:bool):
         winners = {}
         winners = self.groupStages()
+        #Print it out depending on whether roundof16 is 
+        print(self.currUser.nation)
+        for i in winners:
+            print(winners[i])
+        if self.currUser in winners.values():
+            print("made it to round of 16")
+        else:
+            print("You've been knocked out")
         winners = self.round16(winners)
         winners = self.quarterFinals(winners)
         winners = self.semiFinals(winners)
         winner = self.finals(winners)
-        print(f"{winner.nation} has won the world cup")
+        print(f"{winner} has won the world cup!")
         return
         

@@ -1,6 +1,7 @@
 import random
 import helper_functions
-
+#todo: Add more questions
+#todo: Randomize
 trivia = [
     ("Which country won the first FIFA World Cup in 1930?", ["Brazil", "Uruguay", "Italy", "Germany"], 1),
     ("Who holds the record for the most goals in World Cup history?", ["Ronaldo", "Pele", "Miroslav Klose", "Gerd Müller"], 2),
@@ -13,7 +14,7 @@ trivia = [
     ("Which nation first introduced the World Cup trophy known as the Jules Rimet Trophy?", ["France", "Brazil", "Italy", "Uruguay"], 0),
     ("Which country won the first ever Women's World Cup in 1991?", ["China", "Germany", "Norway", "United States"], 3),
     ("Who was the youngest player to play in a World Cup?", ["Pelé", "Norman Whiteside", "Lionel Messi", "Michael Owen"], 1),
-    ("Which team won the 2014 FIFA World Cup held in Brazil?", ["Spain", "Argentina", "Brazil", "Germany"], 0),
+    ("Which team won the 2014 FIFA World Cup held in Brazil?", ["Spain", "Argentina", "Brazil", "Germany"], 3),
     ("What was unique about the 1950 World Cup final?", ["No final match was played", "It was played indoors", "It was won on penalties", "It featured co-winners"], 0),
     ("Which country has hosted the World Cup the most times?", ["Brazil", "France", "Italy", "Mexico"], 3),
 ]
@@ -33,7 +34,7 @@ def ask_trivia_question():
     user_choice = helper_functions.checkValidInputInt(4,1,"Choose your answer: ")
 
     if int(user_choice)-1 == correct_index:
-        print("FUUUUCKKKK YOU GOT IT RIGHT YEAAAAAAH BABY LETS G OO OO  O")
+        print("Correct!")
         return True
     else:
         print("Incorrect. The correct answer is:", options[correct_index])

@@ -81,39 +81,27 @@ from the following clubs to manage them at the world cup.\n''')
     randomized_team_selection.append(wc.pot2[random.randint(0, len(wc.pot2)-1)])
     randomized_team_selection.append(wc.pot3[random.randint(0, len(wc.pot3)-1)])
     randomized_team_selection.append(wc.pot4[random.randint(0, len(wc.pot4)-1)])
-    randomized_team_selection.append("test")
     
     #todo: print out the stars
     for i in range(0,4):
-        print(f"({i + 1}): {randomized_team_selection[i].nation:<20} Challenge Level: {ratings[i]:<10} OFFENSE: {randomized_team_selection[i].offense:<10} DEFENSE: {randomized_team_selection[i].defense}")
+        off_stars = randomized_team_selection[i].defense * "*"
+        deff_stars = randomized_team_selection[i].offense * "*"
+        print(f"({i + 1}): {randomized_team_selection[i].nation:<20} Challenge Level: {ratings[i]:<10} OFFENSE: {off_stars:<10} DEFENSE: {deff_stars}")
         time.sleep(1)      
         
     #validate input 
-    nation =randomized_team_selection[ int(checkValidInputInt(5,1,"Choose your team: "))-1]
+    player_nation = randomized_team_selection[ int(checkValidInputInt(5,1,"Choose your team: "))-1]
 
     # time.sleep(2)
     #todo:  Print out your team stats
-    wc.currUser = nation
-    wc.simulate()
-    choice = checkValidInputInt(4,1,"Choose your team: ")
-    player_nation = randomized_team_selection[int(choice)-1]
-    
+    wc.currUser = player_nation
+    print()
     print(f"\nYou have chosen {player_nation.nation} as your team. Good luck!")
-
+    print()
     choice = checkValidInputInt(2,1,"Would you like to view the results of the other teams? Press 1 for 'YES' or 2 for 'NO': ")
+    verbose = False
     if(int(choice)==1):
-        wc.printGS()
-
-    # Demo of trivia questions
-    # trivia.ask_trivia_question()
-    # trivia.ask_trivia_question()
-    # trivia.ask_trivia_question()
-
-    #Simulate world cup
-    #! Group stages
-
-    #! Round of 16
-    #!Quarter finals
-    #!Semi-finals
-    #!Finals
+        verbose = True
+    wc.simulate(verbose)
+    
 main()
