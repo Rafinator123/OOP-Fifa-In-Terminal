@@ -1,5 +1,5 @@
 """App file containing class definitions"""
-from helper_functions import calculateGameCPU_group_stages, calculateGameCPU_knockouts, calculateGameUser_groupStage, calculateGameUser_knockout, printTeam
+from helper_functions import calculateGameCPU_group_stages, calculateGameCPU_knockouts, calculateGameUser_groupStage, calculateGameUser_knockout, checkValidInputInt, printTeam
 
 
 class Nation:
@@ -318,17 +318,35 @@ class WorldCup:
         winners = {}
         winners = self.groupStages()
         #Print it out depending on whether roundof16 is 
-        print(self.currUser.nation)
-        for i in winners:
-            print(winners[i])
         if self.currUser in winners.values():
-            print("made it to round of 16")
+            print("Congratulations! You've made it to the round of 16...")
         else:
-            print("You've been knocked out")
+            choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
+            exit if choice == 2 else None
         winners = self.round16(winners)
+        if self.currUser in winners.values():
+            print("Congratulations! You've made it to the the quarter finals...")
+        else:
+            choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
+            exit if choice == 2 else None
         winners = self.quarterFinals(winners)
+        if self.currUser in winners.values():
+            print("Congratulations! You've made it to the semi-finals...")
+        else:
+            choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
+            exit if choice == 2 else None
         winners = self.semiFinals(winners)
+        if self.currUser in winners.values():
+            print("Congratulations! You've made it to the world cup finals...")
+        else:
+            choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
+            exit if choice == 2 else None
         winner = self.finals(winners)
-        print(f"{winner} has won the world cup!")
+        if self.currUser == winner:
+            print("You are the world cup champions!")
+        else:
+            choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
+            exit if choice == 2 else None
+        print(f"{winner.nation} has won the world cup!")
         return
         

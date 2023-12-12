@@ -11,8 +11,10 @@ def userGameSimulation(t1, t2, t1_score, t2_score):
     t2_actual_score = 0
     t1_count = 0
     t2_count = 0
+    print("Fabrizio Romano sends out his prediction for the match")
     print(t1.nation + " " + str(t1_score))
     print(t2.nation + " " + str(t2_score))
+    print("-----------------------------------------")
 
     # Adjust the number of iterations to be the sum of t1_score and t2_score
     total_attacks = t1_score + t2_score
@@ -24,7 +26,6 @@ def userGameSimulation(t1, t2, t1_score, t2_score):
             if correct:
                 printGoal()
                 t1_actual_score += 1
-                print("Correct!")
                 print(f"Scored by {t1.key_outfielder}!")
             else:
                 print(f"What a defensive play by {t2.key_defender}...")
@@ -35,7 +36,6 @@ def userGameSimulation(t1, t2, t1_score, t2_score):
             print(f"{t2.midfielder} finds {t2.key_outfielder} on the attack! It's all up to {t1.key_defender} to stop it!")
             correct = ask_trivia_question()
             if correct:
-                print("Correct!")
                 print(f"What a defensive play by {t1.key_defender}...")
             else:
                 t2_actual_score += 1
@@ -44,7 +44,27 @@ def userGameSimulation(t1, t2, t1_score, t2_score):
             print(f"It's {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
         
         print("--------------------------------")
-
+    #if attacks are 0 then simulate once
+    if total_attacks == 0:
+        print(f"{t1.midfielder} finds {t1.key_outfielder} on the attack! He's through on goal!")
+        correct = ask_trivia_question()
+        if correct:
+            printGoal()
+            t1_actual_score += 1
+            print(f"Scored by {t1.key_outfielder}!")
+        else:
+            print(f"What a defensive play by {t2.key_defender}...")
+        print(f"Score remains {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
+        print("--------------------------------")
+        print(f"{t2.midfielder} finds {t2.key_outfielder} on the attack! It's all up to {t1.key_defender} to stop it!")
+        correct = ask_trivia_question()
+        if correct:
+            print(f"What a defensive play by {t1.key_defender}...")
+        else:
+            t2_actual_score += 1
+            print("Incorrect!")
+            print(f"Scored by {t2.key_outfielder}")
+        print(f"It's {t1.nation} {t1_actual_score} - {t2_actual_score} {t2.nation}")
     return t1_actual_score, t2_actual_score
 
 
@@ -69,6 +89,7 @@ def calculateGameCPU_knockouts(t1, t2):
     
     #Extra time
     if t1_score == t2_score:
+        print("")
         t1_score = scoreCalc(random.randint(t1.offense-2,t1.offense), random.randint(t2.defense-2, t2.offense))
         t2_score = scoreCalc(random.randint(t2.offense-2,t2.offense), random.randint(t1.defense-2, t1.offense))
         if t1_score > t2_score:
