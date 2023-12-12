@@ -48,6 +48,7 @@ def checkValidInputInt(upperLim,lowerLim,inputQuestion):
 def main():
     f = Figlet(font='slant')
     print(f.renderText('Welcome to PyFIFA!'))
+
     print('''
 \033[1mGithub\033[0m:
 https://github.com/Rafinator123/OOP-Fifa-In-Terminal\033[0m
@@ -71,7 +72,9 @@ Players must correctly answer world cup trivia questions
 
 
     f_name = input("\033[1mWhat is your first name?\033[0m\n")
+    print()
     l_name = input("\033[1mWhat is your last name?\033[0m\n")
+    print()
     print('''Coach\033[1m:''',f_name,l_name,"\033[0m")
 
     print(f'''\nAfter an ilustrious career working at \033[1m{random_soccer_teams[random.randint(0,len(random_soccer_teams)-1)]}\033[0m, you've been approached 

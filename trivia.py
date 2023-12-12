@@ -63,5 +63,5 @@ def ask_trivia_question():
     if int(user_choice)-1 == correct_index:
         return True
     else:
-        print("\n\033[2mIncorrect...\033[0m\nThe answer is\033[1m", options[correct_index], "\033[0m\n")
+        print("\n\033[31mIncorrect...\033[0m\nThe answer is\033[1m", options[correct_index], "\033[0m\n")
         return False

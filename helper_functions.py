@@ -13,16 +13,16 @@ def userGameSimulation(t1, t2, t1_score, t2_score):
     t1_count = 0
     t2_count = 0
     print("\033[1mFabrizio Romano\033[0m's match prediction:")
-    sleep(.8)
+    sleep(1)
     if t1_score == t2_score:
         print("Tie")
     elif t1_score > t2_score:
         print("Prediction: " + "\033[32m\033[1m" + t1.nation + "\033[0m" + " wins")
     else:
         print("Prediction: " + "\033[32m\033[1m" + t2.nation + "\033[0m wins\n")
-    sleep(.8)
+    sleep(1)
     print("\033[1m"+t1.nation +"\033[0m " + str(t1_score) + " - " + str(t2_score) + " " + "\033[1m"+t2.nation +"\033[0m")
-    sleep(.8)
+    sleep(1)
     print("\n\033[3mChange the outcome of the match by correctly answering trivia questions!\033[0m")
     input("\033[1m\033[7mPress enter to start the match\n\033[0m")
 
@@ -38,15 +38,15 @@ def userGameSimulation(t1, t2, t1_score, t2_score):
                 t1_actual_score += 1
                 print(f"\033[1m{t1.nation}\033[0m Scores! Goal by \033[1m{t1.key_outfielder}\033[0m!")
             else:
-                print(f"What a defensive play by  \033[1m{t2.key_defender} \033[0m...")
-            print(f"\n\033[2mScore remains...\033[0m\n\033[1m{t1.nation}\033[0m {t1_actual_score} - {t2_actual_score} \033[1m{t2.nation}")
-            input("\033[1m\033[7mPress enter to continue\n\033[0m")
+                print(f"What a defensive play by \033[1m{t2.key_defender} \033[0m...")
+            print(f"\n\033[3mScore remains...\033[0m\n\033[1m{t1.nation}\033[0m {t1_actual_score} - {t2_actual_score} \033[1m{t2.nation}")
+            print()
         if t2_count < t2_score:
             t2_count += 1
             print(f"\033[1m{t2.midfielder}\033[0m finds \033[1m{t2.key_outfielder}\033[0m on the attack! It's all up to \033[1m{t1.key_defender}\033[0m to stop it!")
             correct = ask_trivia_question()
             if correct:
-                print(f"What a defensive play by \033[1m{t1.key_defender}\033[0m...")
+                print(f"What a defensive play by \033[1m{t1.key_defender}\033[0m...\n")
             else:
                 t2_actual_score += 1
                 print(f"Scored by \033[1m{t2.key_outfielder}\033[0m")
@@ -59,11 +59,12 @@ def userGameSimulation(t1, t2, t1_score, t2_score):
         if correct:
             printGoal()
             t1_actual_score += 1
-            print(f"\n\033[2mScore remains...\033[0m\n\033[1m{t1.nation}\033[0m's \033[1m{t1.key_outfielder}\033[0m!")
+            print(f"\n\033[3mScore remains...\033[0m\n\033[1m{t1.nation}\033[0m's \033[1m{t1.key_outfielder}\033[0m!")
+            print()
         else:
             print(f"What a defensive play by {t2.key_defender}...")
-        print(f"\n\033[2mScore remains...\033[0m\n\033[1m{t1.nation}\033[0m {t1_actual_score} - {t2_actual_score} \033[1m{t2.nation}\033[0m")
-        input("\033[1m\033[7mPress enter to continue\n\033[0m")
+        print(f"\n\033[3mScore remains...\033[0m\n\033[1m{t1.nation}\033[0m {t1_actual_score} - {t2_actual_score} \033[1m{t2.nation}\033[0m")
+        print()
         print(f"\033[1m{t2.midfielder}\033[0m finds \033[1m{t2.key_outfielder}\033[0m on the attack! It's all up to \033[1m{t1.key_defender}\033[0m to stop it!")
         correct = ask_trivia_question()
         if correct:
@@ -209,7 +210,7 @@ def checkValidInputInt(upperLim,lowerLim,inputQuestion):
 
 def printGoal():
     f = Figlet(font='slant')
-    print(f.renderText('GOAL!'))
+    print("\033[92m" + f.renderText('GOAL!') + "\033[0m")
 
 def printTeam(team1,team2):
     f = Figlet(font='slant')

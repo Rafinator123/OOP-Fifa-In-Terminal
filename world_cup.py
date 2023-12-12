@@ -320,28 +320,28 @@ class WorldCup:
         winners = self.groupStages()
         #Print it out depending on whether roundof16 is 
         if self.currUser in winners.values():
-            print("\nCongratulations!\nYou've made it to the round of 16...\n")
-            input("Press enter to continue:")
+            print("Congratulations!\nYou've made it to the round of 16...\n")
+            input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
             choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
             exit if choice == 2 else None
         winners = self.round16(winners)
         if self.currUser in winners.values():
-            print("\nCongratulations! You've made it to the the quarter finals...\n")
+            print("Congratulations! You've made it to the the quarter finals...\n")
             input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
             choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
             exit if choice == 2 else None
         winners = self.quarterFinals(winners)
         if self.currUser in winners.values():
-            print("\nCongratulations! You've made it to the semi-finals...\n")
+            print("Congratulations! You've made it to the semi-finals...\n")
             input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
             choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
             exit if choice == 2 else None
         winners = self.semiFinals(winners)
         if self.currUser in winners.values():
-            print("\nCongratulations! You've made it to the world cup finals...\n")
+            print("Congratulations! You've made it to the world cup finals...\n")
             input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
             choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
