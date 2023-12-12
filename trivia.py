@@ -54,15 +54,14 @@ def ask_trivia_question():
     question, options, correct_index = random.choice(trivia)
     trivia.remove((question, options, correct_index))
 
-    print("\n" + question)
+    print("\n\033[1m"+question +"\033[0m")
     for i, option in enumerate(options):
-        print(f"({i + 1}): {option}")
+        print(f"({i + 1}) {option}")
 
-    user_choice = helper_functions.checkValidInputInt(4,1,"Choose your answer: ")
+    user_choice = helper_functions.checkValidInputInt(4,1,"\033[1mChoose your answer:\033[0m ")
 
     if int(user_choice)-1 == correct_index:
-        print("Correct!")
         return True
     else:
-        print("Incorrect. The correct answer is:", options[correct_index])
+        print("\n\033[2mIncorrect...\033[0m\nThe answer is\033[1m", options[correct_index], "\033[0m\n")
         return False
