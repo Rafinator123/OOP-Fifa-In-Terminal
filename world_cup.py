@@ -100,13 +100,14 @@ class Group:
         #third round
         getPoints("a","c")
         getPoints("b", "d")
+    
+    # Need to fix this 
     def printOutTable(self):
-        print(f"Group {self.letter}\n ------------------")
-        
-        # Sort nations in the group based on points
+        print(f"\033[5mGroup {self.letter}\033[0m")
         sorted_nations = sorted(self.group.values(), key=lambda x: x[1], reverse=True)
         for i, (nation, points) in enumerate(sorted_nations, start=1):
-            print(f"{i}. {nation.nation} - Points: {points}")
+            print(f"{i}. \033[1m{nation.nation}\033[0m - Points: {points}")
+        print("\n")
         
 class WorldCup:
     def __init__(self):
@@ -232,7 +233,7 @@ class WorldCup:
             for j in range(1,3):
                 code = self.groups[i].letter + str(j)
                 winners[code] = sorted_nations[j-1][0]
-        input("Press enter to continue:")
+        #input("Press enter to continue:")
         return winners
     def round16(self, group_stage_winners):
         r16_winners = {}
@@ -319,34 +320,38 @@ class WorldCup:
         winners = self.groupStages()
         #Print it out depending on whether roundof16 is 
         if self.currUser in winners.values():
-            print("Congratulations! You've made it to the round of 16...")
+            print("Congratulations!\nYou've made it to the round of 16...\n")
+            input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
             choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
             exit if choice == 2 else None
         winners = self.round16(winners)
         if self.currUser in winners.values():
-            print("Congratulations! You've made it to the the quarter finals...")
+            print("Congratulations! You've made it to the the quarter finals...\n")
+            input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
             choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
             exit if choice == 2 else None
         winners = self.quarterFinals(winners)
         if self.currUser in winners.values():
-            print("Congratulations! You've made it to the semi-finals...")
+            print("Congratulations! You've made it to the semi-finals...\n")
+            input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
             choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
             exit if choice == 2 else None
         winners = self.semiFinals(winners)
         if self.currUser in winners.values():
-            print("Congratulations! You've made it to the world cup finals...")
+            print("Congratulations! You've made it to the world cup finals...\n")
+            input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
             choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
             exit if choice == 2 else None
         winner = self.finals(winners)
         if self.currUser == winner:
-            print("You are the world cup champions!")
+            print("\nYou are the world cup champions!")
         else:
             choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
             exit if choice == 2 else None
-        print(f"{winner.nation} has won the world cup!")
+        print(f"{winner.nation} has won the world cup!!")
         return
         
