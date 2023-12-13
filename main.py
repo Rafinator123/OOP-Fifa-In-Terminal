@@ -1,11 +1,9 @@
 """Calls main function"""
 from pyfiglet import Figlet
 import random
-import time
-from world_cup import WorldCup, Group
-import trivia
-from helper_functions import calculateGameCPU_group_stages
-
+from world_cup import WorldCup
+from Helper import Helper
+from trivia import TriviaBank
 
 #this is for introduction. I.e. each time you run game it will say you had an illustrious carrier at one of these 3
 random_soccer_teams = [
@@ -24,28 +22,10 @@ random_soccer_teams = [
     "Bayern Munich",
     "Borussia Dortmund",
 ]
-
-
-def isNum(inp):
-    for i in inp:
-        if not i.isdigit():
-            return False
-    return True
-
-
-def checkValidInputInt(upperLim,lowerLim,inputQuestion):
-    #upper lim and lower lim are INCLUSIVE
-    loop=True
-    while(loop):
-        out=input(inputQuestion)
-        if len(out)>0 and isNum(out) and int(out)<=upperLim and int(out)>=lowerLim:
-            loop=False
-            return out
-        else:
-            print("Invalid Input, try again")
-
-
 def main():
+    trivia = TriviaBank()
+    helper = Helper(trivia)
+    
     f = Figlet(font='slant')
     print(f.renderText('Welcome to PyFIFA!'))
 
@@ -84,7 +64,7 @@ from the following clubs to manage them at the world cup.\n''')
 
     ratings=["Easy","Medium","Hard","Very Hard"]
     # Print four teams here going from easy difficulty to hard:
-    wc = WorldCup()
+    wc = WorldCup(helper, trivia)
     randomized_team_selection =[]
     randomized_team_selection.append(wc.pot1[random.randint(0, len(wc.pot1)-1)])
     randomized_team_selection.append(wc.pot2[random.randint(0, len(wc.pot2)-1)])
@@ -98,7 +78,7 @@ from the following clubs to manage them at the world cup.\n''')
         print(f"({i + 1}) \033[1m{randomized_team_selection[i].nation:<20}\033[0m Difficulty: {ratings[i]:<10} OFFENSE: {off_stars:<10} DEFENSE: {deff_stars}")     
         
     #validate input 
-    player_nation = randomized_team_selection[ int(checkValidInputInt(5,1,"\n\033[1mEnter your choice:\033[0m "))-1]
+    player_nation = randomized_team_selection[ int(helper.checkValidInputInt(5,1,"\n\033[1mEnter your choice:\033[0m "))-1]
 
     # time.sleep(2)
     #todo:  Print out your team stats
@@ -106,10 +86,6 @@ from the following clubs to manage them at the world cup.\n''')
     print()
     print(f"You have chosen \033[1m{player_nation.nation}\033[0m as your team! Good luck!")
     print()
-    choice = checkValidInputInt(2,1,"\033[1mView current standings?\033[0m\n(1) Yes\n(2) No\n\033[1mEnter your choice: \033[0m")
-    verbose = False
-    if(int(choice)==1):
-        verbose = True
-    wc.simulate(verbose)
+    wc.simulate()
     
 main()
