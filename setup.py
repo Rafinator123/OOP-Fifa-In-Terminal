@@ -5,8 +5,8 @@ with open('README.md', 'r', encoding='utf-8') as file:
 
 setup(
     name='pyFIFA',
-    version='0.4.4',
-    py_modules=['main','world_cup','helper_functions','trivia'],
+    version='0.4.6',
+    py_modules=['main','world_cup','Helper','trivia'],
     packages=find_packages(),
     install_requires=[
         'pyfiglet>=0.8.post1',

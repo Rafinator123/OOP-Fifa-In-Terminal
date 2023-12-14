@@ -1,11 +1,9 @@
 """Calls main function"""
 from pyfiglet import Figlet
 import random
-import time
-from world_cup import WorldCup, Group
-import trivia
-from helper_functions import calculateGameCPU_group_stages
-
+from world_cup import WorldCup
+from Helper import Helper
+from trivia import TriviaBank
 
 #this is for introduction. I.e. each time you run game it will say you had an illustrious carrier at one of these 3
 random_soccer_teams = [
@@ -24,58 +22,49 @@ random_soccer_teams = [
     "Bayern Munich",
     "Borussia Dortmund",
 ]
-
-
-def isNum(inp):
-    for i in inp:
-        if not i.isdigit():
-            return False
-    return True
-
-
-def checkValidInputInt(upperLim,lowerLim,inputQuestion):
-    #upper lim and lower lim are INCLUSIVE
-    loop=True
-    while(loop):
-        out=input(inputQuestion)
-        if len(out)>0 and isNum(out) and int(out)<=upperLim and int(out)>=lowerLim:
-            loop=False
-            return out
-        else:
-            print("Invalid Input, try again")
-
-
 def main():
-    print("----------------------------------------------------------------------------------")
+    trivia = TriviaBank()
+    helper = Helper(trivia)
+    
     f = Figlet(font='slant')
     print(f.renderText('Welcome to PyFIFA!'))
-    print("----------------------------------------------------------------------------------")
+
     print('''
-PyFIFA is an interactive text-based soccer game inspired by the 2023 FIFA World 
-Cup in Qatar. Please press the Enter/Return button on your keyboard to start the 
-game and initate character creation. We hope you enjoy!
+\033[1mGithub\033[0m:
+https://github.com/Rafinator123/OOP-Fifa-In-Terminal\033[0m
 
-This package was created by:
-Alex Hmitti
-Rafael-Nadal Scala
-Aaron Stein
+\033[1mPyFIFA\033[0m is an interactive text-based soccer game inspired by the 2023 FIFA World 
+Cup in Qatar. 
+          
+Team are ranked by historical preformance and are divided into 4 pots. 
+Teams with higher \033[1mOFFENSE\033[0m and \033[1mDEFENSE\033[0m are likely to be more successful in the \033[1mPyFIFA\033[0m.
+          
+However, teams with lower \033[1mOFFENSE\033[0m and \033[1mDEFENSE\033[0m provide the player more challenging gameplay.
+Winning games involves a blend of luck and trivia knowledge.
+Players must correctly answer world cup trivia questions
 
-Github:
-https://github.com/Rafinator123/OOP-Fifa-In-Terminal
-''')
-    print("----------------------------------------------------------------------------------")
-    f_name = input("What is your first name? ")
-    l_name = input("What is your last name? ")
-    print("Coach's Name:",f_name,l_name)
+\033[1mHow to play\033[0m:
+1. Enter your name and choose your team
+2. Answer trivia questions to win games
+3. Hope the odds are in your favor 
+4. Win the \033[1mPyFIFA\033[0m World Cup!
+            ''')
 
-    print(f'''\nAfter an ilustrious career working at {random_soccer_teams[random.randint(0,len(random_soccer_teams)-1)]}, you've been approached 
+
+    f_name = input("\033[1mWhat is your first name?\033[0m\n")
+    print()
+    l_name = input("\033[1mWhat is your last name?\033[0m\n")
+    print()
+    print('''Coach\033[1m:''',f_name,l_name,"\033[0m")
+
+    print(f'''\nAfter an ilustrious career working at \033[1m{random_soccer_teams[random.randint(0,len(random_soccer_teams)-1)]}\033[0m, you've been approached 
 from the following clubs to manage them at the world cup.\n''')
        
     # time.sleep(3)
 
     ratings=["Easy","Medium","Hard","Very Hard"]
     # Print four teams here going from easy difficulty to hard:
-    wc = WorldCup()
+    wc = WorldCup(helper, trivia)
     randomized_team_selection =[]
     randomized_team_selection.append(wc.pot1[random.randint(0, len(wc.pot1)-1)])
     randomized_team_selection.append(wc.pot2[random.randint(0, len(wc.pot2)-1)])
@@ -86,23 +75,17 @@ from the following clubs to manage them at the world cup.\n''')
     for i in range(0,4):
         off_stars = randomized_team_selection[i].defense * "*"
         deff_stars = randomized_team_selection[i].offense * "*"
-        print(f"({i + 1}): {randomized_team_selection[i].nation:<20} Challenge Level: {ratings[i]:<10} OFFENSE: {off_stars:<10} DEFENSE: {deff_stars}")
-        time.sleep(1)      
+        print(f"({i + 1}) \033[1m{randomized_team_selection[i].nation:<20}\033[0m Difficulty: {ratings[i]:<10} OFFENSE: {off_stars:<10} DEFENSE: {deff_stars}")     
         
     #validate input 
-    player_nation = randomized_team_selection[ int(checkValidInputInt(5,1,"Choose your team: "))-1]
+    player_nation = randomized_team_selection[ int(helper.checkValidInputInt(5,1,"\n\033[1mEnter your choice:\033[0m "))-1]
 
     # time.sleep(2)
     #todo:  Print out your team stats
     wc.currUser = player_nation
     print()
-    print(f"\nYou have chosen {player_nation.nation} as your team. Good luck!")
+    print(f"You have chosen \033[1m{player_nation.nation}\033[0m as your team! Good luck!")
     print()
-    choice = checkValidInputInt(2,1,"Would you like to view the results of the other teams? Press 1 for 'YES' or 2 for 'NO': ")
-    verbose = False
-    if(int(choice)==1):
-        verbose = True
-    wc.simulate(verbose)
+    wc.simulate()
     
-if __name__ == "__main__":
-    main()
+main()

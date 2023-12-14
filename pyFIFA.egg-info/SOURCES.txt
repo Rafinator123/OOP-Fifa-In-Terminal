@@ -1,6 +1,6 @@
+Helper.py
 LICENSE
 README.md
-helper_functions.py
 main.py
 setup.py
 trivia.py
