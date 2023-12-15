@@ -81,7 +81,6 @@ from the following clubs to manage them at the world cup.\n''')
     player_nation = randomized_team_selection[ int(helper.checkValidInputInt(5,1,"\n\033[1mEnter your choice:\033[0m "))-1]
 
     # time.sleep(2)
-    #todo:  Print out your team stats
     wc.currUser = player_nation
     print()
     print(f"You have chosen \033[1m{player_nation.nation}\033[0m as your team! Good luck!")

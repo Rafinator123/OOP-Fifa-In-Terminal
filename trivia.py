@@ -82,13 +82,13 @@ class TriviaBank:
                     print("Choice out of range. Please choose a number between 1 and 4.")
             else:
                 print("Incorrect input... try again.")
-        # sleep(1)
-        # print('.')
-        # sleep(1)
-        # print('..')
-        # sleep(1)
-        # print('...')
-        # sleep(1)
+        sleep(1)
+        print('.')
+        sleep(1)
+        print('..')
+        sleep(1)
+        print('...')
+        sleep(1)
         if int(user_choice) - 1 == trivia_question.index_of_correct:
             print("\n\033[32mCorrect!\033[0m\n")
             return True
