@@ -94,6 +94,7 @@ class Helper:
 
     def calculateGameCPU_group_stages(self,t1, t2):
         """"""
+        #* Netherlands: 5 offense, 3 - 7 roll 7. - 2 = 2 goals. 
         t1_score = self.scoreCalc(random.randint(t1.offense-2,t1.offense+2), random.randint(t2.defense-2, t2.offense+2))
         t2_score = self.scoreCalc(random.randint(t2.offense-2,t2.offense+2), random.randint(t1.defense-2, t1.offense+2))
         if t1_score == t2_score:
@@ -178,9 +179,10 @@ class Helper:
                     return t1
                 else:
                     return t2
-
+        sleep(1)
         # Penalties if still tied after extra time
         if t1_actual_score == t2_actual_score:
+            print("It's going to penalties!")
             t1_penalties, t2_penalties = 0, 0
             rounds = 0
             while rounds < 5 or t1_penalties == t2_penalties:
@@ -188,13 +190,18 @@ class Helper:
                 t2_penalty_score = random.randint(0, 1)
                 t1_penalties += t1_penalty_score
                 t2_penalties += t2_penalty_score
-                self.printGoal() if t1_penalty_score > 0 else None
+                sleep(1)
+                self.printGoal() if t1_penalty_score > 0 else print("Shot goes wide...")
                 print(f"\033[1m{t1.nation}\033[0m has scored!") if t1_penalty_score > 0 else None
-                self.printGoal() if t2_penalty_score > 0 else None
+                sleep(1)
+                self.printGoal() if t2_penalty_score > 0 else print("Shot goes wide...")
                 print(f"\033[1m{t2.nation}\033[0m has scored!") if t2_penalty_score > 0 else None
+                sleep(1)
                 print(f"\033[1m{t1.nation}\033[0m {t1_penalties} - {t2_penalties} \033[1m{t2.nation}\033[0m")
                 rounds += 1
-
+            print()
+            print("Final score...")
+            print(f"\033[1m{t1.nation}\033[0m {t1_penalties} - {t2_penalties} \033[1m{t2.nation}\033[0m")
             return t1 if t1_penalties > t2_penalties else t2
         else:
             return t1 if t1_actual_score > t2_actual_score else t2
@@ -216,7 +223,7 @@ class Helper:
             out=input(inputQuestion)
             if len(out)>0 and self.isNum(out) and int(out)<=upperLim and int(out)>=lowerLim:
                 loop=False
-                return out
+                return int(out)
             else:
                 print("Invalid Input, try again")
 
@@ -233,3 +240,89 @@ class Helper:
         print(f.renderText(team2.nation))
         sleep(.8)
         input("\033[1m\033[7mPress enter to continue\n\033[0m")
+    def printRound16(self,winners16):
+        print("-"*30)
+        print(f"{winners16['A1'].nation}")
+        print(f"vs      ")
+        print(f"{winners16['B2'].nation}")
+        print("-"*30)
+        sleep(.5)
+        print(f"{winners16['A2'].nation}")
+        print(f"vs      ")
+        print(f"{winners16['B1'].nation}")
+        print("-"*30)
+        sleep(.5)
+        print(f"{winners16['C1'].nation}")
+        print(f"vs      ")
+        print(f"{winners16['D2'].nation}")
+        print("-"*30)
+        sleep(.5)
+        print(f"{winners16['C2'].nation}")
+        print(f"vs      ")
+        print(f"{winners16['D1'].nation}")
+        print("-"*30)
+        sleep(.5)
+        print(f"{winners16['E1'].nation}")
+        print(f"vs      ")
+        print(f"{winners16['F2'].nation}")
+        print("-"*30)
+        sleep(.5)
+        print(f"{winners16['E2'].nation}")
+        print(f"vs      ")
+        print(f"{winners16['F1'].nation}")
+        print("-"*30)
+        sleep(.5)
+        print(f"{winners16['G1'].nation}")
+        print(f"vs      ")
+        print(f"{winners16['H2'].nation}")
+        print("-"*30)
+        sleep(.5)
+        print(f"{winners16['G2'].nation}")
+        print(f"vs      ")
+        print(f"{winners16['H1'].nation}")
+        print("-"*30)
+    def printQuarterFinals(self, quarterFinals):
+        print("-"*30)
+        print(f"{quarterFinals['A1B2'].nation}")
+        print(f"vs      ")
+        print(f"{quarterFinals['C1D2'].nation}")
+        print("-"*30)
+        sleep(.5)
+        print(f"{quarterFinals['E1F2'].nation}")
+        print(f"vs      ")
+        print(f"{quarterFinals['G1H2'].nation}")
+        print("-"*30)
+        sleep(.5)
+        print(f"{quarterFinals['A2B1'].nation}")
+        print(f"vs      ")
+        print(f"{quarterFinals['C2D1'].nation}")
+        print("-"*30)
+        sleep(.5)
+        print(f"{quarterFinals['G2H1'].nation}")
+        print(f"vs      ")
+        print(f"{quarterFinals['E2F1'].nation}")
+        print("-"*30)
+        sleep(.5)
+
+        pass
+    def printSemiFinals(self, semiFinals):
+        print("-"*30)
+        print(f"{semiFinals['l1'].nation}")
+        print(f"vs      ")
+        print(f"{semiFinals['l2'].nation}")
+        print("-"*30)
+        sleep(.5)
+        print(f"{semiFinals['r1'].nation}")
+        print(f"vs      ")
+        print(f"{semiFinals['r2'].nation}")
+        print("-"*30)
+        pass
+    def printFinals(self, finals):
+        print("-"*30)
+        print(f"{finals['l'].nation}")
+        sleep(.5)
+        print(f"vs      ")
+        sleep(.5)
+        print(f"{finals['r'].nation}")
+        print("-"*30)
+        pass

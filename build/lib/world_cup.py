@@ -1,6 +1,10 @@
 """App file containing class definitions"""
-from Helper import calculateGameCPU_group_stages, calculateGameCPU_knockouts, calculateGameUser_groupStage, calculateGameUser_knockout, checkValidInputInt, printTeam
-
+import time
+import random
+from pyfiglet import Figlet
+from time import sleep
+from Helper import Helper
+from trivia import TriviaBank
 
 class Nation:
     def __init__(self, c: str, n: str, o: str, mid : str, d: str, off, deff: str) -> None:
@@ -14,19 +18,26 @@ class Nation:
         pass
         
 class Group:
+    # helper = Helper()
+    # trivia = TriviaBank()
     """Class containing each group where group has 4 nations that will play against each other"""
-    def __init__(self, l, n1,n2,n3,n4) -> None:
+    def __init__(self, l, n1,n2,n3,n4,helper) -> None:
         self.letter = l
         self.group = {}
+        self.helper = helper
         self.group["a"] = [n1,0]
         self.group["b"] = [n2,0]
         self.group["c"] = [n3,0]
         self.group["d"] = [n4,0]
         return
     def simulateGroupStagePlayer(self, currUser):
+        def checkStanding():
+            choice = self.helper.checkValidInputInt(2,1,"\033[1mView current standings?\033[0m\n(1) Yes\n(2) No\n\033[1mEnter your choice: \033[0m")
+            if int(choice) == 1:
+                self.printOutTable()
         def getPoints(t1, t2):
             if (self.group[t1][0].nation == currUser.nation):
-                winner = calculateGameUser_groupStage(self.group[t1][0], self.group[t2][0])
+                winner = self.helper.calculateGameUser_groupStage(self.group[t1][0], self.group[t2][0])
                 if len(winner) > 1:
                     self.group[t1][1] += 1
                     self.group[t2][1] += 1
@@ -36,7 +47,7 @@ class Group:
                     else:
                         self.group[t2][1] += 3
             elif (self.group[t2][0].nation == currUser.nation):
-                winner = calculateGameUser_groupStage(self.group[t2][0], self.group[t1][0])
+                winner = self.helper.calculateGameUser_groupStage(self.group[t2][0], self.group[t1][0])
                 if len(winner) > 1:
                     self.group[t1][1] += 1
                     self.group[t2][1] += 1
@@ -46,7 +57,7 @@ class Group:
                     else:
                         self.group[t2][1] += 3
             else:    
-                winner = calculateGameCPU_group_stages(self.group[t1][0], self.group[t2][0])
+                winner = self.helper.calculateGameCPU_group_stages(self.group[t1][0], self.group[t2][0])
                 if len(winner) > 1:
                     self.group[t1][1] += 1
                     self.group[t2][1] += 1
@@ -57,31 +68,37 @@ class Group:
                         self.group[t2][1] += 3
         """Simulaes games for the whole group."""
         #First round
+        checkStanding()
+        time.sleep(1)
+        print("--------------------")
+        print("Match Day: 1/3")
+        print("--------------------")
+        time.sleep(1)
         getPoints("a","b")
         getPoints("c","d")
+        checkStanding()
         #Second round
+        time.sleep(1)
+        print("--------------------")
+        print("Match Day: 2/3")
+        print("--------------------")
+        time.sleep(1)
         getPoints("a","d")
         getPoints("b","c")
+        checkStanding()
         #third round
+        time.sleep(1)
+        print("--------------------")
+        print("Final Match Day")
+        print("--------------------")
+        time.sleep(1)
         getPoints("a","c")
         getPoints("b", "d")
         self.printOutTable()
-        # getPoints(self.group["a"],self.group["b"])
-        # getPoints(self.group["c"],self.group["d"])
-        # self.printOutTable()
-        # #Second round
-        # getPoints(self.group["a"],self.group["d"])
-        # getPoints(self.group["b"],self.group["c"])
-        # self.printOutTable()
-        # #third round
-        # getPoints(self.group["a"],self.group["c"])
-        # getPoints(self.group["b"],self.group["d"])
-        # self.printOutTable()
-        #Exit prematurely if you fail to go through
         
     def simulateGroupStageCPU(self):
         def getPoints(t1, t2):
-            winner = calculateGameCPU_group_stages(self.group[t1][0], self.group[t2][0])
+            winner = self.helper.calculateGameCPU_group_stages(self.group[t1][0], self.group[t2][0])
             if len(winner) > 1:
                 self.group[t1][1] += 1
                 self.group[t2][1] += 1
@@ -100,16 +117,19 @@ class Group:
         #third round
         getPoints("a","c")
         getPoints("b", "d")
+    
+    # Need to fix this 
     def printOutTable(self):
-        print(f"Group {self.letter}\n ------------------")
-        
-        # Sort nations in the group based on points
+        print(f"\033[5mGroup {self.letter}\033[0m")
         sorted_nations = sorted(self.group.values(), key=lambda x: x[1], reverse=True)
         for i, (nation, points) in enumerate(sorted_nations, start=1):
-            print(f"{i}. {nation.nation} - Points: {points}")
+            print(f"{i}. \033[1m{nation.nation}\033[0m - Points: {points}")
+        print("\n")
         
 class WorldCup:
-    def __init__(self):
+    def __init__(self, helper, trivia):
+        self.helper = helper
+        self.trivia = trivia
         self.currUser = ""
         self.groups = []
         self.pot1 =[]
@@ -121,7 +141,7 @@ class WorldCup:
         ecuador = Nation("Gustavo Alfaro", "Ecuador", "Enner Valencia", "Carlos Gruezo", "Piero Hincapié", 3, 3)
         senegal = Nation("Aliou Cissé", "Senegal", "Sadio Mané", "Idrissa Gueye", "Kalidou Koulibaly", 4, 3)
         netherlands = Nation("Louis van Gaal", "Netherlands", "Memphis Depay", "Frenkie de Jong", "Virgil van Dijk", 5, 5)
-        groupA = Group("A",qatar, ecuador, senegal, netherlands)
+        groupA = Group("A",qatar, ecuador, senegal, netherlands, self.helper)
         self.pot1.append(netherlands)
         self.pot2.append(senegal)
         self.pot3.append(ecuador)
@@ -132,7 +152,7 @@ class WorldCup:
         iran = Nation("Dragan Skočić", "Iran", "Sardar Azmoun", "Alireza Jahanbakhsh", "Milad Mohammadi", 3, 2)
         usa = Nation("Gregg Berhalter", "USA", "Christian Pulisic", "Weston McKennie", "John Brooks", 3, 3)
         wales = Nation("Rob Page", "Wales", "Gareth Bale", "Aaron Ramsey", "Joe Rodon", 3, 2)
-        groupB = Group("B",england, iran, usa, wales)
+        groupB = Group("B",england, iran, usa, wales, self.helper)
         self.pot1.append(england)
         self.pot2.append(usa)
         self.pot3.append(wales)
@@ -144,7 +164,7 @@ class WorldCup:
         saudi_arabia = Nation("Hervé Renard", "Saudi Arabia", "Salem Al-Dawsari", "Abdullah Otayf", "Yasser Al-Shahrani", 2, 2)
         mexico = Nation("Gerardo Martino", "Mexico", "Raúl Jiménez", "Héctor Herrera", "Guillermo Ochoa", 4, 4)
         poland = Nation("Paulo Sousa", "Poland", "Robert Lewandowski", "Grzegorz Krychowiak", "Kamil Glik", 4, 3)
-        groupC = Group("C",argentina, saudi_arabia, mexico, poland)
+        groupC = Group("C",argentina, saudi_arabia, mexico, poland, self.helper)
         self.pot1.append(argentina)
         self.pot2.append(mexico)
         self.pot3.append(poland)
@@ -156,7 +176,7 @@ class WorldCup:
         australia = Nation("Graham Arnold", "Australia", "Mat Ryan", "Aaron Mooy", "Mathew Leckie", 3, 3)
         denmark = Nation("Kasper Hjulmand", "Denmark", "Christian Eriksen", "Pierre-Emile Højbjerg", "Simon Kjaer", 4, 4)
         tunisia = Nation("Mondher Kebaier", "Tunisia", "Youssef Msakni", "Wahbi Khazri", "Dylan Bronn", 2, 1)
-        groupD = Group("D",france, australia, denmark, tunisia)
+        groupD = Group("D",france, australia, denmark, tunisia, self.helper)
         self.pot1.append(france)
         self.pot2.append(denmark)
         self.pot3.append(australia)
@@ -168,7 +188,7 @@ class WorldCup:
         costa_rica = Nation("Luis Fernando Suárez", "Costa Rica", "Joel Campbell", "Bryan Ruiz", "Keylor Navas", 3, 3)
         germany = Nation("Hansi Flick", "Germany", "Thomas Müller", "Leon Goretzka", "Mauel Neuer", 4, 4)
         japan = Nation("Hajime Moriyasu", "Japan", "Takefusa Kubo", "Gaku Shibasaki", "Maya Yoshida", 4, 3)
-        groupE = Group("E",spain, costa_rica, germany, japan)
+        groupE = Group("E",spain, costa_rica, germany, japan, self.helper)
         self.pot1.append(spain)
         self.pot2.append(germany)
         self.pot3.append(japan)
@@ -180,7 +200,7 @@ class WorldCup:
         canada = Nation("John Herdman", "Canada", "Jonathan David", "Scott Arfield", "Alphonso Davies", 2, 3)
         morocco = Nation("Vahid Halilhodžić", "Morocco", "Achraf Hakimi", "Hakim Ziyech", "Romain Saïss", 3, 4)
         croatia = Nation("Zlatko Dalić", "Croatia", "Ivan Perišić", "Luka Modrić", "Domagoj Vida", 4, 4)
-        groupF = Group("F",belgium, canada, morocco, croatia)
+        groupF = Group("F",belgium, canada, morocco, croatia, self.helper)
         self.pot1.append(belgium)
         self.pot2.append(croatia)
         self.pot3.append(morocco)
@@ -192,7 +212,7 @@ class WorldCup:
         serbia = Nation("Dragan Stojković", "Serbia", "Dušan Tadić", "Sergej Milinković-Savić", "Aleksandar Kolarov", 3, 4)
         switzerland = Nation("Murat Yakin", "Switzerland",  "Xherdan Shaqiri", "Granit Xhaka","Manuel Akanji", 3, 3)
         cameroon = Nation("Toni Conceição", "Cameroon", "Eric Maxim Choupo-Moting", "André-Frank Zambo Anguissa", "Joël Matip", 4, 2)
-        groupG = Group("G",brazil, serbia, switzerland, cameroon)
+        groupG = Group("G",brazil, serbia, switzerland, cameroon, self.helper)
         self.pot1.append(brazil)
         self.pot2.append(serbia)
         self.pot3.append(switzerland)
@@ -204,7 +224,7 @@ class WorldCup:
         ghana = Nation("Otto Addo", "Ghana", "Andre Ayew", "Thomas Partey", "Daniel Amartey", 3, 3)
         uruguay = Nation("Óscar Tabárez", "Uruguay", "Luis Suárez", "Federico Valverde", "José María Giménez", 4, 4)
         korea_republic = Nation("Paulo Bento", "Korea Republic", "Son Heung-min", "Hwang Hee-chan", "Kim Min-jae", 2, 2)
-        groupH = Group("H",portugal, ghana, uruguay, korea_republic)
+        groupH = Group("H",portugal, ghana, uruguay, korea_republic, self.helper)
         self.pot1.append(portugal)
         self.pot2.append(uruguay)
         self.pot3.append(ghana)
@@ -232,17 +252,17 @@ class WorldCup:
             for j in range(1,3):
                 code = self.groups[i].letter + str(j)
                 winners[code] = sorted_nations[j-1][0]
-        input("Press enter to continue:")
+        #input("Press enter to continue:")
         return winners
     def round16(self, group_stage_winners):
         r16_winners = {}
         def knockout(t1, t2):
             if t1.nation == self.currUser.nation:
-                winner = calculateGameUser_knockout(t1,t2)
+                winner = self.helper.calculateGameUser_knockout(t1,t2)
             if t2.nation == self.currUser.nation:
-                winner = calculateGameUser_knockout(t2,t1)
+                winner = self.helper.calculateGameUser_knockout(t2,t1)
             else:
-                winner = calculateGameCPU_knockouts(t1,t2)
+                winner = self.helper.calculateGameCPU_knockouts(t1,t2)
             return winner
         # Group A  vs Group B
         A1B2 = knockout(group_stage_winners["A1"],group_stage_winners["B2"])
@@ -268,11 +288,11 @@ class WorldCup:
     def quarterFinals(self, r16_winners):
         def knockout(t1, t2):
             if t1.nation == self.currUser:
-                winner = calculateGameUser_knockout(t1,t2)
+                winner = self.helper.calculateGameUser_knockout(t1,t2)
             if t2.nation == self.currUser:
-                winner = calculateGameUser_knockout(t2,t1)
+                winner = self.helper.calculateGameUser_knockout(t2,t1)
             else:
-                winner = calculateGameCPU_knockouts(t1,t2)
+                winner = self.helper.calculateGameCPU_knockouts(t1,t2)
             return winner
         quarter_finals_winners = {}
         #first match
@@ -288,11 +308,11 @@ class WorldCup:
     def semiFinals(self, quarter_finals_winners):
         def knockout(t1, t2):
             if t1.nation == self.currUser.nation:
-                winner = calculateGameUser_knockout(t1,t2)
+                winner = self.helper.calculateGameUser_knockout(t1,t2)
             if t2.nation == self.currUser.nation:
-                winner = calculateGameUser_knockout(t2,t1)
+                winner = self.helper.calculateGameUser_knockout(t2,t1)
             else:
-                winner = calculateGameCPU_knockouts(t1,t2)
+                winner = self.helper.calculateGameCPU_knockouts(t1,t2)
             return winner
         finals = {}
         #first match
@@ -304,49 +324,108 @@ class WorldCup:
     def finals(self, finals):
         def knockout(t1, t2):
             if t1.nation == self.currUser.nation:
-                winner = calculateGameUser_knockout(t1,t2)
+                winner = self.helper.calculateGameUser_knockout(t1,t2)
             if t2.nation == self.currUser.nation:
-                winner = calculateGameUser_knockout(t2,t1)
+                winner = self.helper.calculateGameUser_knockout(t2,t1)
             else:
-                winner = calculateGameCPU_knockouts(t1,t2)
+                winner = self.helper.calculateGameCPU_knockouts(t1,t2)
             return winner
         #first match
         world_cup_champion  = knockout(finals["l"], finals["r"])
         return world_cup_champion
     
-    def simulate(self, verbose:bool):
+    def simulate(self):
         winners = {}
         winners = self.groupStages()
         #Print it out depending on whether roundof16 is 
-        if self.currUser in winners.values():
-            print("Congratulations! You've made it to the round of 16...")
+        choice = self.helper.checkValidInputInt(2,1,"Do you want to see the results of the group stages?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
+        if choice == 1:
+            for i in range(len(self.groups)):
+                self.groups[i].printOutTable()
+                sleep(1)
+                print()
+        sleep(1)
+        print("--------------------")
+        print("Round of 16")
+        print("--------------------")
+        sleep(1)
+        if self.currUser.nation == winners["A1"].nation or self.currUser.nation == winners["A2"].nation or\
+            self.currUser.nation == winners["B1"].nation or self.currUser.nation == winners["B2"].nation or\
+            self.currUser.nation == winners["C1"].nation or self.currUser.nation == winners["C2"].nation or\
+            self.currUser.nation == winners["D1"].nation or self.currUser.nation == winners["D2"].nation or\
+            self.currUser.nation == winners["E1"].nation or self.currUser.nation == winners["E2"].nation or\
+            self.currUser.nation == winners["F1"].nation or self.currUser.nation == winners["F2"].nation or\
+            self.currUser.nation == winners["G1"].nation or self.currUser.nation == winners["G2"].nation or\
+            self.currUser.nation == winners["H1"].nation or self.currUser.nation == winners["H2"].nation:
+            print("Congratulations!\nYou've made it to the round of 16...\n")
+            input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
-            choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
-            exit if choice == 2 else None
-        winners = self.round16(winners)
-        if self.currUser in winners.values():
-            print("Congratulations! You've made it to the the quarter finals...")
-        else:
-            choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
-            exit if choice == 2 else None
-        winners = self.quarterFinals(winners)
-        if self.currUser in winners.values():
-            print("Congratulations! You've made it to the semi-finals...")
-        else:
-            choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
-            exit if choice == 2 else None
-        winners = self.semiFinals(winners)
-        if self.currUser in winners.values():
-            print("Congratulations! You've made it to the world cup finals...")
-        else:
-            choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
-            exit if choice == 2 else None
-        winner = self.finals(winners)
-        if self.currUser == winner:
-            print("You are the world cup champions!")
-        else:
-            choice = checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n 1) Yes show me! \n 2) No I'm done...")
-            exit if choice == 2 else None
-        print(f"{winner.nation} has won the world cup!")
-        return
+            choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No, exit please.\n answer: ")
+            if choice == 2:
+                quit()  
+        #Round of 16
         
+        choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
+        if choice == 1:
+            self.helper.printRound16(winners)
+        winners = self.round16(winners)
+        if self.currUser.nation == winners["A1B2"].nation or self.currUser.nation == winners["A2B1"].nation or\
+            self.currUser.nation == winners["C1D2"].nation or self.currUser.nation == winners["C2D1"].nation or\
+            self.currUser.nation == winners["E1F2"].nation or self.currUser.nation == winners["E2F1"].nation or\
+            self.currUser.nation == winners["G1H2"].nation or self.currUser.nation == winners["G2H1"].nation:
+            print("Congratulations! You've made it to the the quarter finals...\n")
+            input("\033[7m\033[1mPress enter to continue\033[0m")
+        else:
+            choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No, exit please.\n answer: ")
+            if choice == 2: 
+                quit()  
+        #quarterFinals
+        sleep(1)
+        print("--------------------")
+        print("Quarter Finals")
+        print("--------------------")
+        sleep(1)
+        choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
+        if choice == 1:
+            self.helper.printQuarterFinals(winners)
+        winners = self.quarterFinals(winners)
+        if self.currUser.nation == winners["l1"].nation or self.currUser.nation == winners["l2"].nation or\
+            self.currUser.nation == winners["r1"].nation or self.currUser.nation == winners["r2"].nation:
+            print("Congratulations! You've made it to the semi-finals...\n")
+            input("\033[7m\033[1mPress enter to continue\033[0m")
+        else:
+            choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No, exit please.\n answer: ")
+            if choice == 2: 
+                quit()  
+        #Semi Finals
+        sleep(1)
+        print("--------------------")
+        print("Semi-finals")
+        print("--------------------")
+        sleep(1)
+        choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
+        if choice == 1:
+            self.helper.printSemiFinals(winners)
+        winners = self.semiFinals(winners)
+
+        #finals
+        if self.currUser.nation == winners["r"].nation or self.currUser.nation == winners["l"].nation:
+            print("Congratulations! You've made it to the world cup finals...\n")
+            input("\033[7m\033[1mPress enter to continue\033[0m")
+        else:
+            choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No, exit please.\n answer: ")
+            if choice == 2: 
+                quit()  
+        sleep(1)
+        print("--------------------")
+        print("Finals")
+        print("--------------------")
+        sleep(1)
+        choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
+        if choice == 1:
+            self.helper.printFinals(winners)
+        winner = self.finals(winners)
+        if self.currUser.nation == winner.nation:
+            print("\nYou are the world cup champions!")
+        print(f"{winner.nation} has won the world cup!!")
+        return

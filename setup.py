@@ -5,7 +5,7 @@ with open('README.md', 'r', encoding='utf-8') as file:
 
 setup(
     name='pyFIFA',
-    version='0.4.6',
+    version='1.0.0',
     py_modules=['main','world_cup','Helper','trivia'],
     packages=find_packages(),
     install_requires=[
