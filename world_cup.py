@@ -344,6 +344,11 @@ class WorldCup:
                 self.groups[i].printOutTable()
                 sleep(1)
                 print()
+        sleep(1)
+        print("--------------------")
+        print("Round of 16")
+        print("--------------------")
+        sleep(1)
         if self.currUser.nation == winners["A1"].nation or self.currUser.nation == winners["A2"].nation or\
             self.currUser.nation == winners["B1"].nation or self.currUser.nation == winners["B2"].nation or\
             self.currUser.nation == winners["C1"].nation or self.currUser.nation == winners["C2"].nation or\
@@ -355,10 +360,11 @@ class WorldCup:
             print("Congratulations!\nYou've made it to the round of 16...\n")
             input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
-            choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
+            choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No, exit please.\n answer: ")
             if choice == 2:
-                exit()
+                quit()  
         #Round of 16
+        
         choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
         if choice == 1:
             self.helper.printRound16(winners)
@@ -370,10 +376,15 @@ class WorldCup:
             print("Congratulations! You've made it to the the quarter finals...\n")
             input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
-            choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
+            choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No, exit please.\n answer: ")
             if choice == 2: 
-                exit()
-        #semi finals
+                quit()  
+        #quarterFinals
+        sleep(1)
+        print("--------------------")
+        print("Quarter Finals")
+        print("--------------------")
+        sleep(1)
         choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
         if choice == 1:
             self.helper.printQuarterFinals(winners)
@@ -383,10 +394,15 @@ class WorldCup:
             print("Congratulations! You've made it to the semi-finals...\n")
             input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
-            choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
+            choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No, exit please.\n answer: ")
             if choice == 2: 
-                exit()
+                quit()  
         #Semi Finals
+        sleep(1)
+        print("--------------------")
+        print("Semi-finals")
+        print("--------------------")
+        sleep(1)
         choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
         if choice == 1:
             self.helper.printSemiFinals(winners)
@@ -397,9 +413,14 @@ class WorldCup:
             print("Congratulations! You've made it to the world cup finals...\n")
             input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
-            choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
+            choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No, exit please.\n answer: ")
             if choice == 2: 
-                exit()
+                quit()  
+        sleep(1)
+        print("--------------------")
+        print("Finals")
+        print("--------------------")
+        sleep(1)
         choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
         if choice == 1:
             self.helper.printFinals(winners)
