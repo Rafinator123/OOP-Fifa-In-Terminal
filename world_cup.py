@@ -353,56 +353,57 @@ class WorldCup:
             self.currUser.nation == winners["G1"].nation or self.currUser.nation == winners["G2"].nation or\
             self.currUser.nation == winners["H1"].nation or self.currUser.nation == winners["H2"].nation:
             print("Congratulations!\nYou've made it to the round of 16...\n")
-            choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
-            if choice == 1:
-                self.helper.printRound16(winners)
             input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
             choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
             if choice == 2:
                 exit()
         #Round of 16
+        choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
+        if choice == 1:
+            self.helper.printRound16(winners)
         winners = self.round16(winners)
         if self.currUser.nation == winners["A1B2"].nation or self.currUser.nation == winners["A2B1"].nation or\
             self.currUser.nation == winners["C1D2"].nation or self.currUser.nation == winners["C2D1"].nation or\
             self.currUser.nation == winners["E1F2"].nation or self.currUser.nation == winners["E2F1"].nation or\
             self.currUser.nation == winners["G1H2"].nation or self.currUser.nation == winners["G2H1"].nation:
             print("Congratulations! You've made it to the the quarter finals...\n")
-            choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
-            if choice == 1:
-                self.helper.printQuarterFinals(winners)
             input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
             choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
             if choice == 2: 
                 exit()
         #semi finals
-        winners = self.semiFinals(winners)
+        choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
+        if choice == 1:
+            self.helper.printQuarterFinals(winners)
+        winners = self.quarterFinals(winners)
         if self.currUser.nation == winners["l1"].nation or self.currUser.nation == winners["l2"].nation or\
             self.currUser.nation == winners["r1"].nation or self.currUser.nation == winners["r2"].nation:
             print("Congratulations! You've made it to the semi-finals...\n")
-            choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
-            if choice == 1:
-                self.helper.printSemiFinals(winners)
             input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
             choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
             if choice == 2: 
                 exit()
         #Semi Finals
-        winner = self.finals(winners)
+        choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
+        if choice == 1:
+            self.helper.printSemiFinals(winners)
+        winners = self.semiFinals(winners)
 
+        #finals
         if self.currUser.nation == winners["r"].nation or self.currUser.nation == winners["l"].nation:
             print("Congratulations! You've made it to the world cup finals...\n")
-            choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
-            if choice == 1:
-                self.helper.printFinals(winners)
             input("\033[7m\033[1mPress enter to continue\033[0m")
         else:
             choice = self.helper.checkValidInputInt(2,1,"You've been knocked out...\n Do you want to see the results regardless?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
             if choice == 2: 
                 exit()
-        #Finals
+        choice = self.helper.checkValidInputInt(2,1,"Do you want to see the upcoming matchup?\n (1) Yes show me! \n (2) No let's continue...\n answer: ")
+        if choice == 1:
+            self.helper.printFinals(winners)
+        winner = self.finals(winners)
         if self.currUser.nation == winner.nation:
             print("\nYou are the world cup champions!")
         print(f"{winner.nation} has won the world cup!!")
