@@ -259,7 +259,7 @@ class WorldCup:
         def knockout(t1, t2):
             if t1.nation == self.currUser.nation:
                 winner = self.helper.calculateGameUser_knockout(t1,t2)
-            if t2.nation == self.currUser.nation:
+            elif t2.nation == self.currUser.nation:
                 winner = self.helper.calculateGameUser_knockout(t2,t1)
             else:
                 winner = self.helper.calculateGameCPU_knockouts(t1,t2)
@@ -287,9 +287,9 @@ class WorldCup:
         return r16_winners
     def quarterFinals(self, r16_winners):
         def knockout(t1, t2):
-            if t1.nation == self.currUser:
+            if t1.nation == self.currUser.nation:
                 winner = self.helper.calculateGameUser_knockout(t1,t2)
-            if t2.nation == self.currUser:
+            elif t2.nation == self.currUser.nation:
                 winner = self.helper.calculateGameUser_knockout(t2,t1)
             else:
                 winner = self.helper.calculateGameCPU_knockouts(t1,t2)
@@ -309,7 +309,7 @@ class WorldCup:
         def knockout(t1, t2):
             if t1.nation == self.currUser.nation:
                 winner = self.helper.calculateGameUser_knockout(t1,t2)
-            if t2.nation == self.currUser.nation:
+            elif t2.nation == self.currUser.nation:
                 winner = self.helper.calculateGameUser_knockout(t2,t1)
             else:
                 winner = self.helper.calculateGameCPU_knockouts(t1,t2)
@@ -325,7 +325,7 @@ class WorldCup:
         def knockout(t1, t2):
             if t1.nation == self.currUser.nation:
                 winner = self.helper.calculateGameUser_knockout(t1,t2)
-            if t2.nation == self.currUser.nation:
+            elif t2.nation == self.currUser.nation:
                 winner = self.helper.calculateGameUser_knockout(t2,t1)
             else:
                 winner = self.helper.calculateGameCPU_knockouts(t1,t2)
@@ -369,6 +369,7 @@ class WorldCup:
         if choice == 1:
             self.helper.printRound16(winners)
         winners = self.round16(winners)
+        #quarter finals
         if self.currUser.nation == winners["A1B2"].nation or self.currUser.nation == winners["A2B1"].nation or\
             self.currUser.nation == winners["C1D2"].nation or self.currUser.nation == winners["C2D1"].nation or\
             self.currUser.nation == winners["E1F2"].nation or self.currUser.nation == winners["E2F1"].nation or\
